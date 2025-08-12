@@ -1,0 +1,129 @@
+# SQL Interview Question: Find and Remove Symmetrical Duplicates
+
+## 1. Overview
+This document explains how to solve a common SQL interview question that involves identifying and removing "symmetrical duplicates" from a table. A symmetrical duplicate is a pair of rows where the values in two columns are swapped, such as `(A, B)` and `(B, A)`. The challenge is to keep only one of these pairs while preserving the original row data. This problem tests your understanding of functions like `LEAST`/`GREATEST` and window functions like `ROW_NUMBER`.
+
+## 2. Problem Statement
+
+### 2.1. The Scenario
+You are given a `routes` table with `origin` and `destination` columns representing travel routes.
+
+**routes:**
+| origin    | destination |
+|-----------|-------------|
+| Bangalore | Chennai     |
+| Chennai   | Bangalore   |
+| Pune      | Chennai     |
+| Delhi     | Pune        |
+
+### 2.2. The Requirement
+Write a SQL query to return a list of distinct routes. The pairs `(Bangalore, Chennai)` and `(Chennai, Bangalore)` are considered duplicates of the same route. Your query should return only one of these two rows. Other unique routes should be returned as is.
+
+**Expected Output:**
+| origin    | destination |
+|-----------|-------------|
+| Bangalore | Chennai     |
+| Pune      | Chennai     |
+| Delhi     | Pune        |
+
+## 3. Setup Script
+You can use the following T-SQL script to create the table and populate it with the sample data.
+
+```sql
+-- Create the table
+CREATE TABLE routes (
+    origin VARCHAR(50),
+    destination VARCHAR(50)
+);
+GO
+
+-- Insert sample data
+INSERT INTO routes (origin, destination) VALUES
+('Bangalore', 'Chennai'),
+('Chennai', 'Bangalore'),
+('Pune', 'Chennai'),
+('Delhi', 'Pune');
+GO
+
+-- Verify the initial data
+SELECT * FROM routes;
+```
+
+## 4. Solutions and Explanations
+The core strategy is to create a "canonical" or standardized representation for each route pair, which allows us to group and rank symmetrical duplicates together.
+
+### 4.1. Solution 1: Using `LEAST`, `GREATEST`, and `ROW_NUMBER()`
+This is a concise and modern approach, ideal for databases that support the `LEAST` and `GREATEST` functions (like SQL Server, PostgreSQL, Oracle).
+
+-   **Explanation:**
+    1.  **Create a Canonical Key**: For each row, `LEAST(origin, destination)` and `GREATEST(origin, destination)` create a standardized pair. For both `(Bangalore, Chennai)` and `(Chennai, Bangalore)`, this standardized key becomes `(Bangalore, Chennai)`.
+    2.  **Rank the Duplicates**: We use the `ROW_NUMBER()` window function. By using `PARTITION BY LEAST(...), GREATEST(...)`, we group the symmetrical duplicates together and assign a sequential rank (1, 2) to them. Unique routes will get a rank of 1.
+    3.  **Filter for Unique Rows**: We wrap the logic in a Common Table Expression (CTE) and then select only the rows where the assigned rank is `1`. This effectively keeps the first occurrence of each unique route combination.
+
+> [!IMPORTANT]
+> You cannot simply use `SELECT DISTINCT LEAST(origin, destination), GREATEST(origin, destination)`. This would return the unique pairs but would alter the original `origin` and `destination` columns, which is not the requirement. The goal is to return the original, intact row.
+
+-   **SQL Query:**
+    ```sql
+    WITH RankedRoutes AS (
+        SELECT
+            origin,
+            destination,
+            ROW_NUMBER() OVER (
+                PARTITION BY
+                    LEAST(origin, destination),
+                    GREATEST(origin, destination)
+                ORDER BY
+                    origin -- or any column for a deterministic tie-break
+            ) as rn
+        FROM
+            routes
+    )
+    SELECT
+        origin,
+        destination
+    FROM
+        RankedRoutes
+    WHERE
+        rn = 1;
+    ```
+
+### 4.2. Solution 2: Using `CASE` Statements
+This approach is an excellent alternative if your SQL dialect does not support `LEAST` and `GREATEST`. The logic remains the same, but the canonical key is created using `CASE` statements.
+
+-   **Explanation:**
+    -   `CASE WHEN origin < destination THEN origin ELSE destination END` simulates the `LEAST` function.
+    -   `CASE WHEN origin > destination THEN origin ELSE destination END` simulates the `GREATEST` function.
+    -   These `CASE` expressions are then used in the `PARTITION BY` clause of the `ROW_NUMBER()` function, just as in the first solution.
+
+-   **SQL Query:**
+    ```sql
+    WITH RankedRoutes AS (
+        SELECT
+            origin,
+            destination,
+            ROW_NUMBER() OVER (
+                PARTITION BY
+                    CASE WHEN origin < destination THEN origin ELSE destination END,
+                    CASE WHEN origin > destination THEN origin ELSE destination END
+                ORDER BY
+                    origin
+            ) as rn
+        FROM
+            routes
+    )
+    SELECT
+        origin,
+        destination
+    FROM
+        RankedRoutes
+    WHERE
+        rn = 1;
+    ```
+
+## 5. Summary of Approaches
+
+| Method                              | Pros                                                              | Cons                                                         |
+|-------------------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|
+| **`LEAST`/`GREATEST`**              | Very clean, concise, and easy to read. Clearly expresses the intent. | Not supported by all SQL dialects.                           |
+| **`CASE` Statements**               | More portable and works in virtually any SQL environment.         | More verbose and slightly less readable than `LEAST`/`GREATEST`. |
