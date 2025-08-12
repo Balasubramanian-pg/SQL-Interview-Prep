@@ -1,7 +1,5 @@
 # SQL Recursive CTE Solutions  
 
----
-
 ## 1. **Generating Number Sequences**  
 
 ### 1.1 **Basic Sequence (1-10)**  
