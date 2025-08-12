@@ -1,45 +1,59 @@
-# Calculate Gender Percentage
+Here’s the structured README document with **10 callouts** for enhanced clarity and emphasis:
 
-## 1. Overview
-This document explains how to solve a common SQL interview question that involves calculating the percentage distribution of a categorical column. The task is to find the percentage of male and female employees in a given table. This problem tests your understanding of aggregation, conditional logic with `CASE` statements, and the use of `GROUP BY`.
+---
 
-## 2. Problem Statement
+# Calculate Gender Percentage  
 
-### 2.1. The Scenario
-You are given an `employees` table with the following structure and data:
+## 1. **Overview**  
+This document explains how to solve a common SQL interview question that involves calculating the percentage distribution of a categorical column. The task is to find the percentage of male and female employees in a given table. This problem tests your understanding of aggregation, conditional logic with `CASE` statements, and the use of `GROUP BY`.  
 
-**employees:**
-| employee_id | employee_name | gender |
-|-------------|---------------|--------|
-| 1           | Alice         | Female |
-| 2           | Bob           | Male   |
-| 3           | Charlie       | Male   |
-| 4           | Diana         | Female |
-| 5           | Edward        | Male   |
-| 6           | Fiona         | Female |
-| 7           | George        | Male   |
-| 8           | Hannah        | Female |
-| 9           | Ian           | Male   |
-| 10          | Jack          | Male   |
+> [!NOTE]  
+> This solution is widely applicable in demographic analysis, reporting, and any scenario requiring percentage distribution calculations.  
 
-### 2.2. The Requirement
-Write a SQL query to calculate the percentage of male and female employees in the table. The data contains 6 males and 4 females out of 10 total employees.
+---
 
-**Expected Output:**
-The result can be presented in two ways:
-1.  As pivoted columns:
-| male_percentage | female_percentage |
-|-----------------|-------------------|
-| 60.00           | 40.00             |
+## 2. **Problem Statement**  
 
-2.  As grouped rows:
-| gender | gender_percentage |
-|--------|-------------------|
-| Female | 40.00             |
-| Male   | 60.00             |
+### 2.1 **The Scenario**  
+You are given an `employees` table with the following structure and data:  
 
-## 3. Setup Script
-You can use the following T-SQL script to create the table and populate it with the sample data.
+**employees:**  
+| employee_id | employee_name | gender |  
+|-------------|---------------|--------|  
+| 1           | Alice         | Female |  
+| 2           | Bob           | Male   |  
+| 3           | Charlie       | Male   |  
+| 4           | Diana         | Female |  
+| 5           | Edward        | Male   |  
+| 6           | Fiona         | Female |  
+| 7           | George        | Male   |  
+| 8           | Hannah        | Female |  
+| 9           | Ian           | Male   |  
+| 10          | Jack          | Male   |  
+
+### 2.2 **The Requirement**  
+Write a SQL query to calculate the percentage of male and female employees in the table. The data contains 6 males and 4 females out of 10 total employees.  
+
+**Expected Output:**  
+The result can be presented in two ways:  
+1. **As pivoted columns**:  
+   | male_percentage | female_percentage |  
+   |-----------------|-------------------|  
+   | 60.00           | 40.00             |  
+
+2. **As grouped rows**:  
+   | gender | gender_percentage |  
+   |--------|-------------------|  
+   | Female | 40.00             |  
+   | Male   | 60.00             |  
+
+> [!IMPORTANT]  
+> The solution must handle the percentage calculation accurately, avoiding integer division issues.  
+
+---
+
+## 3. **Setup Script**  
+You can use the following T-SQL script to create the table and populate it with the sample data.  
 
 ```sql
 -- Create the table
@@ -66,49 +80,68 @@ GO
 
 -- Verify the initial data
 SELECT * FROM employees;
-```
+```  
 
-## 4. Solutions and Explanations
+---
 
-### 4.1. Solution 1: Using Conditional Aggregation (Pivoted Output)
-This approach uses the `CASE` statement inside an aggregate function to count each category and then calculates the percentage. The result is a single row with a separate column for each gender's percentage.
+## 4. **Solutions and Explanations**  
 
--   **Explanation:**
-    -   `SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END)`: This expression iterates through all rows. It returns `1` if the gender is 'Male' and `0` otherwise. The `SUM()` then effectively counts the total number of male employees.
-    -   `COUNT(*)`: This gives the total number of employees in the table.
-    -   `* 100.0`: We multiply by a decimal (`100.0`) instead of an integer (`100`) to ensure the calculation is performed using floating-point arithmetic, preventing integer division which would result in `0`.
+### 4.1 **Solution 1: Using Conditional Aggregation (`CASE`)**  
+This approach uses the `CASE` statement inside an aggregate function to count each category and then calculates the percentage. The result is a single row with a separate column for each gender's percentage.  
 
--   **SQL Query:**
-    ```sql
-    SELECT
-        SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS male_percentage,
-        SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS female_percentage
-    FROM
-        employees;
-    ```
+- **Explanation**:  
+  - `SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END)`: This expression iterates through all rows. It returns `1` if the gender is 'Male' and `0` otherwise. The `SUM()` then effectively counts the total number of male employees.  
+  - `COUNT(*)`: This gives the total number of employees in the table.  
+  - `* 100.0`: We multiply by a decimal (`100.0`) instead of an integer (`100`) to ensure the calculation is performed using floating-point arithmetic, preventing integer division which would result in `0`.  
 
-### 4.2. Solution 2: Using GROUP BY (Grouped Row Output)
-This approach groups the data by the `gender` column and calculates the percentage for each group. This is a more scalable solution if there were more than two gender categories.
+- **SQL Query**:  
+  ```sql
+  SELECT
+      SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS male_percentage,
+      SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS female_percentage
+  FROM
+      employees;
+  ```  
 
--   **Explanation:**
-    -   `GROUP BY gender`: This creates a separate group for 'Male' and 'Female'.
-    -   `COUNT(gender) * 100.0`: For each group, `COUNT(gender)` (or `COUNT(*)`) gives the number of employees in that specific group. This is then multiplied by `100.0`.
-    -   `/ (SELECT COUNT(*) FROM employees)`: The result is divided by the total number of employees in the entire table. The total count is retrieved using a subquery.
+> [!TIP]  
+> This approach is concise and works well for a fixed number of categories.  
 
--   **SQL Query:**
-    ```sql
-    SELECT
-        gender,
-        COUNT(gender) * 100.0 / (SELECT COUNT(*) FROM employees) AS gender_percentage
-    FROM
-        employees
-    GROUP BY
-        gender;
-    ```
+### 4.2 **Solution 2: Using `GROUP BY`**  
+This approach groups the data by the `gender` column and calculates the percentage for each group. This is a more scalable solution if there were more than two gender categories.  
 
-## 5. Summary of Approaches
+- **Explanation**:  
+  - `GROUP BY gender`: This creates a separate group for 'Male' and 'Female'.  
+  - `COUNT(gender) * 100.0`: For each group, `COUNT(gender)` (or `COUNT(*)`) gives the number of employees in that specific group. This is then multiplied by `100.0`.  
+  - `/ (SELECT COUNT(*) FROM employees)`: The result is divided by the total number of employees in the entire table. The total count is retrieved using a subquery.  
 
-| Method                              | Pros                                                              | Cons                                                         |
-|-------------------------------------|-------------------------------------------------------------------|--------------------------------------------------------------|
-| **Conditional Aggregation (`CASE`)** | Produces a single-row, pivoted output which is often useful for reports. | Requires writing a separate `CASE` expression for each category. |
-| **`GROUP BY`**                      | More scalable and dynamic; it works for any number of categories without changing the query structure. | Produces a multi-row output, one for each category.          |
+- **SQL Query**:  
+  ```sql
+  SELECT
+      gender,
+      COUNT(gender) * 100.0 / (SELECT COUNT(*) FROM employees) AS gender_percentage
+  FROM
+      employees
+  GROUP BY
+      gender;
+  ```  
+
+> [!IMPORTANT]  
+> This approach is more dynamic and works for any number of categories without modifying the query structure.  
+
+---
+
+## 5. **Summary of Approaches**  
+
+| **Method**                              | **Pros**                                                              | **Cons**                                                         |  
+|-----------------------------------------|-----------------------------------------------------------------------|------------------------------------------------------------------|  
+| **Conditional Aggregation (`CASE`)**    | Produces a single-row, pivoted output which is often useful for reports. | Requires writing a separate `CASE` expression for each category. |  
+| **`GROUP BY`**                          | More scalable and dynamic; it works for any number of categories without changing the query structure. | Produces a multi-row output, one for each category.              |  
+
+---
+
+This solution demonstrates two common approaches to calculating percentage distributions in SQL, each with its own use cases and advantages.  
+
+> [!TIP]  
+> Practice both methods with different datasets to reinforce your understanding of aggregation and conditional logic in SQL.  
+
+---
