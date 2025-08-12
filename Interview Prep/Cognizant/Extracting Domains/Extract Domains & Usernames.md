@@ -1,4 +1,4 @@
-# SQL Interview Question: Extracting Email Domains and Usernames  
+# Extracting Email Domains and Usernames  
 
 ## 1. **Problem Statement**  
 Given an `employees` table with:  
