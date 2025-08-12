@@ -1,4 +1,4 @@
-# SQL Interview Question: Time Difference Between User Events  
+# Time Difference Between User Events  
 
 ## 1. **Problem Summary**  
 You're given a `user_activity` table with:  
