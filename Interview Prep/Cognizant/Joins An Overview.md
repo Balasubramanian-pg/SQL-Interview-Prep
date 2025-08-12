@@ -1,8 +1,4 @@
-Here’s the structured README document based on your provided content, formatted according to your requirements:
-
----
-
-# SQL Joins Interview Question Summary  
+# Joins - An Overview of Backend operations & Summary of Output  
 
 ## 1. **Question**  
 Given two tables:  
