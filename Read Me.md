@@ -2,8 +2,6 @@
 
 This repository contains a collection of SQL interview questions and solutions, categorized by the companies that reportedly asked them. Use this guide to navigate through the various problems and enhance your SQL skills for technical interviews.
 
----
-
 ## American Express
 
 *   [Year-Over-Year Growth Analysis](https://github.com/Balasubramanian-pg/SQL-Interview-Pewp/blob/main/American%20Express/YOY%20Growth.md)
