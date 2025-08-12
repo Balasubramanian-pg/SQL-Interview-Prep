@@ -1,0 +1,119 @@
+# SQL Time Series Data Analysis  
+
+## 1. **Problem Statement**  
+Given a `temperature_readings` table with:  
+- `reading_id`  
+- `sensor_id`  
+- `reading_time` (timestamp)  
+- `temperature`  
+
+We need to:  
+1. Extract just the date from the timestamp.  
+2. Calculate the average temperature for each date.  
+3. Round the results to 2 decimal places.  
+4. Order the results by date.  
+
+> [!NOTE]  
+> This problem tests your ability to handle time series data, perform aggregation, and format results in SQL.  
+
+---
+
+## 2. **Solution Code**  
+```sql
+SELECT
+    DATE(reading_time) AS reading_date,
+    ROUND(AVG(temperature), 2) AS average_temperature
+FROM
+    temperature_readings
+GROUP BY
+    DATE(reading_time)
+ORDER BY
+    DATE(reading_time);
+```  
+
+---
+
+## 3. **Explanation**  
+
+### 3.1 **DATE() Function**  
+- **Purpose**: Extracts just the date portion from the timestamp.  
+- **Example**: Converts `"2023-07-01 08:30:00"` to `"2023-07-01"`.  
+
+> [!TIP]  
+> Use `DATE()` to focus on daily aggregation, ignoring time components.  
+
+### 3.2 **AVG() Function**  
+- **Purpose**: Calculates the average temperature for all readings on each date.  
+- **Interaction**: Works with `GROUP BY` to aggregate data by date.  
+
+> [!IMPORTANT]  
+> Ensure the `temperature` column contains numeric values for accurate averaging.  
+
+### 3.3 **ROUND() Function**  
+- **Purpose**: Formats the average temperature to 2 decimal places.  
+- **Example**: Converts `27.4666667` to `27.47`.  
+
+> [!NOTE]  
+> Use `ROUND()` for better readability of floating-point numbers.  
+
+### 3.4 **GROUP BY**  
+- **Purpose**: Groups all readings by their date for aggregation.  
+- **Requirement**: Must match the expression used in the `SELECT` clause (`DATE(reading_time)`).  
+
+> [!IMPORTANT]  
+> `GROUP BY` is essential for per-date aggregation.  
+
+### 3.5 **ORDER BY**  
+- **Purpose**: Sorts the results chronologically by date.  
+- **Benefit**: Ensures a logical presentation of time series data.  
+
+> [!TIP]  
+> Always sort time series data chronologically for easier analysis.  
+
+---
+
+## 4. **Key Concepts**  
+
+### 4.1 **Time Series Analysis**  
+- **Use Case**: Common for IoT/sensor data.  
+- **Focus**: Aggregating measurements over time periods (daily, monthly, etc.).  
+
+> [!NOTE]  
+> Time series analysis is crucial for monitoring trends and patterns over time.  
+
+### 4.2 **Date Extraction**  
+- **Purpose**: Essential when analyzing data by day/month/year.  
+- **Variations**: Different databases may use `DATE()`, `CAST()`, or `TRUNCATE()`.  
+
+> [!TIP]  
+> Familiarize yourself with date functions specific to your SQL dialect.  
+
+### 4.3 **Data Aggregation**  
+- **Function**: `AVG()` calculates the mean temperature.  
+- **Alternatives**: Use `MIN()`, `MAX()`, `SUM()`, or `COUNT()` as needed.  
+
+> [!IMPORTANT]  
+> Choose the aggregation function based on the analysis requirement.  
+
+### 4.4 **Result Formatting**  
+- **Function**: `ROUND()` improves presentation.  
+- **Alternatives**: Use `TRUNCATE()` or database-specific formatting functions.  
+
+> [!NOTE]  
+> Proper formatting enhances the readability of analytical results.  
+
+---
+
+## 5. **Additional Notes**  
+- **Performance**: For large datasets, ensure the `reading_time` column is indexed.  
+- **Edge Cases**: Handle `NULL` values in the `temperature` column if they exist.  
+
+> [!WARNING]  
+> `NULL` values in the `temperature` column will be excluded by `AVG()` by default.  
+
+---
+
+This solution efficiently transforms raw timestamp data into meaningful daily averages, which is a common requirement for monitoring and reporting systems.  
+
+> [!TIP]  
+> Practice this pattern with different time intervals (e.g., hourly, monthly) to strengthen your time series analysis skills.  
