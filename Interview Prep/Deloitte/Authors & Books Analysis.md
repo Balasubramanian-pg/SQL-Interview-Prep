@@ -1,6 +1,6 @@
-# SQL Interview Questions: Authors and Books Analysis  
+# Authors and Books Analysis  
 
-## 1. **Problem 1: List All Authors and Number of Books Written**  
+### 1.List All Authors and Number of Books Written**  
 
 ### 1.1 **Solution**  
 ```sql
