@@ -1,7 +1,3 @@
-Here’s the structured README document based on your provided content, formatted according to your requirements:
-
----
-
 # Year-on-Year (YoY) Revenue Growth Calculation in SQL  
 
 ## 1. **Overview**  
