@@ -6,8 +6,6 @@ This document explains how to solve a common SQL interview question that require
 > [!NOTE]  
 > This solution is widely applicable in HR analytics, payroll systems, and any scenario requiring departmental salary comparisons.  
 
----
-
 ## 2. **Problem Statement**  
 
 ### 2.1 **The Scenario**  
@@ -35,8 +33,6 @@ Write a SQL query that returns the `department_id`, the name of the employee wit
 > [!IMPORTANT]  
 > The solution must handle ties (e.g., multiple employees with the same minimum or maximum salary) and return only one result per department.  
 
----
-
 ## 3. **Setup Script**  
 You can use the following T-SQL script to create the table and populate it with sample data.  
 
@@ -61,8 +57,6 @@ GO
 -- Verify the initial data
 SELECT * FROM employee;
 ```  
-
----
 
 ## 4. **Solutions and Explanations**  
 
@@ -124,8 +118,6 @@ This approach uses `ROW_NUMBER()` to rank employees by salary within each depart
   ORDER BY
       department_id;
   ```  
-
----
 
 ## 5. **Summary**  
 Both `FIRST_VALUE()` and `ROW_NUMBER()` are valid and common solutions for this problem. `FIRST_VALUE()` often results in a cleaner, more direct query, while `ROW_NUMBER()` is a powerful technique applicable to many ranking and filtering problems.  
