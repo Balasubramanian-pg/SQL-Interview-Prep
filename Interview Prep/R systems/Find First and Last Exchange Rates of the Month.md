@@ -1,7 +1,3 @@
-Here’s the structured README document with **10 callouts** for enhanced clarity and emphasis:
-
----
-
 # Find First and Last Exchange Rates of the Month  
 
 ## 1. **Overview**  
