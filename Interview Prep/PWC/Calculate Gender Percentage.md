@@ -1,7 +1,3 @@
-Here’s the structured README document with **10 callouts** for enhanced clarity and emphasis:
-
----
-
 # Calculate Gender Percentage  
 
 ## 1. **Overview**  
