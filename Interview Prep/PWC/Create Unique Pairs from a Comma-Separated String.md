@@ -1,37 +1,47 @@
-# Create Unique Pairs from a Comma-Separated String
+# Create Unique Pairs from a Comma-Separated String  
 
-## 1. Overview
-This document explains how to solve a multi-step SQL interview question that involves parsing a comma-separated string, generating all possible pairs of the resulting values, and then filtering for a unique set of these pairs. This problem tests your knowledge of string splitting, set generation using `CROSS JOIN`, and conditional filtering to eliminate duplicates and self-pairing.
+## 1. **Overview**  
+This document explains how to solve a multi-step SQL interview question that involves parsing a comma-separated string, generating all possible pairs of the resulting values, and then filtering for a unique set of these pairs. This problem tests your knowledge of string splitting, set generation using `CROSS JOIN`, and conditional filtering to eliminate duplicates and self-pairing.  
 
-## 2. Problem Statement
+> [!NOTE]  
+> This solution is applicable in scenarios requiring combinatorial analysis, such as pairing items, generating comparisons, or creating unique combinations from lists.  
 
-### 2.1. The Scenario
-You are given a table named `input_table` with a single column `A` containing a comma-separated string of numbers.
+---
 
-**input_table:**
-| A         |
-|-----------|
-| 1,2,3,4   |
+## 2. **Problem Statement**  
 
-### 2.2. The Requirement
-Write a SQL query that processes the string to produce a set of unique pairs of the numbers. The query must:
-1.  Split the string "1,2,3,4" into individual numbers (1, 2, 3, 4).
-2.  Create all possible combinations (pairs) of these numbers.
-3.  Filter out pairs where the numbers are the same (e.g., (1,1), (2,2)).
-4.  Filter out symmetrical duplicate pairs (e.g., if (1,2) is included, (2,1) should be excluded).
+### 2.1 **The Scenario**  
+You are given a table named `input_table` with a single column `A` containing a comma-separated string of numbers.  
 
-**Expected Output:**
-| A | B |
-|---|---|
-| 1 | 2 |
-| 1 | 3 |
-| 1 | 4 |
-| 2 | 3 |
-| 2 | 4 |
-| 3 | 4 |
+**input_table:**  
+| A         |  
+|-----------|  
+| 1,2,3,4   |  
 
-## 3. Setup Script
-You can use the following T-SQL script to create the table and populate it with the sample data.
+### 2.2 **The Requirement**  
+Write a SQL query that processes the string to produce a set of unique pairs of the numbers. The query must:  
+1. Split the string "1,2,3,4" into individual numbers (1, 2, 3, 4).  
+2. Create all possible combinations (pairs) of these numbers.  
+3. Filter out pairs where the numbers are the same (e.g., (1,1), (2,2)).  
+4. Filter out symmetrical duplicate pairs (e.g., if (1,2) is included, (2,1) should be excluded).  
+
+**Expected Output:**  
+| A | B |  
+|---|---|  
+| 1 | 2 |  
+| 1 | 3 |  
+| 1 | 4 |  
+| 2 | 3 |  
+| 2 | 4 |  
+| 3 | 4 |  
+
+> [!IMPORTANT]  
+> The solution must handle the string splitting, pairing, and filtering efficiently in a single query.  
+
+---
+
+## 3. **Setup Script**  
+You can use the following T-SQL script to create the table and populate it with the sample data.  
 
 ```sql
 -- Create the table
@@ -46,46 +56,56 @@ GO
 
 -- Verify the initial data
 SELECT * FROM input_table;
-```
+```  
 
-## 4. Solution and Explanation
-The solution can be broken down into three logical steps: splitting the string, creating pairs, and filtering the pairs.
+---
 
-### 4.1. Step 1: Split the String into Rows
-The first step is to parse the comma-separated string. The `STRING_SPLIT` function in T-SQL is perfect for this.
+## 4. **Solution and Explanation**  
+The solution can be broken down into three logical steps: splitting the string, creating pairs, and filtering the pairs.  
 
-> [!NOTE]
-> `STRING_SPLIT` is a table-valued function, which means it returns a table of results. To use it with an existing table, you need to use `CROSS APPLY` (or `OUTER APPLY`). `CROSS APPLY` joins each row from the outer table with the results of the function applied to that row.
+### 4.1 **Step 1: Split the String into Rows**  
+The first step is to parse the comma-separated string. The `STRING_SPLIT` function in T-SQL is perfect for this.  
 
--   **SQL Snippet for Splitting:**
-    ```sql
-    SELECT s.value
-    FROM input_table AS t
-    CROSS APPLY STRING_SPLIT(t.A, ',') AS s;
-    ```
-    This query will produce a single column named `value` with four rows: 1, 2, 3, and 4.
+> [!NOTE]  
+> `STRING_SPLIT` is a table-valued function, which means it returns a table of results. To use it with an existing table, you need to use `CROSS APPLY` (or `OUTER APPLY`). `CROSS APPLY` joins each row from the outer table with the results of the function applied to that row.  
 
-### 4.2. Step 2: Generate All Possible Pairs Using `CROSS JOIN`
-To create every possible combination of the split values, we can perform a `CROSS JOIN` of the result set with itself.
+- **SQL Snippet for Splitting**:  
+  ```sql
+  SELECT s.value
+  FROM input_table AS t
+  CROSS APPLY STRING_SPLIT(t.A, ',') AS s;
+  ```  
+  This query will produce a single column named `value` with four rows: 1, 2, 3, and 4.  
 
--   **Logic**: We use the result from Step 1 as a derived table or CTE and join it to itself. This will produce 4 x 4 = 16 rows, covering all pairs.
--   **SQL Snippet for Pairing:**
-    ```sql
-    WITH SplitValues AS (
-        SELECT s.value FROM input_table AS t CROSS APPLY STRING_SPLIT(t.A, ',') AS s
-    )
-    SELECT T1.value, T2.value
-    FROM SplitValues AS T1
-    CROSS JOIN SplitValues AS T2;
-    ```
+### 4.2 **Step 2: Generate All Possible Pairs Using `CROSS JOIN`**  
+To create every possible combination of the split values, we can perform a `CROSS JOIN` of the result set with itself.  
 
-### 4.3. Step 3: Filter for Unique, Non-Identical Pairs
-The final step is to apply a filter to remove unwanted pairs.
--   **To remove self-pairing (e.g., 1,1)**: We would use `WHERE T1.value <> T2.value`.
--   **To remove symmetrical duplicates (e.g., keep 1,2 but remove 2,1)**: A simple and elegant trick is to use `WHERE T1.value < T2.value`. This condition automatically handles both requirements: it excludes pairs where the values are equal, and it ensures that only one of the two symmetrical pairs is selected (the one where the first element is smaller than the second).
+- **Logic**: We use the result from Step 1 as a derived table or CTE and join it to itself. This will produce 4 × 4 = 16 rows, covering all pairs.  
+- **SQL Snippet for Pairing**:  
+  ```sql
+  WITH SplitValues AS (
+      SELECT s.value FROM input_table AS t CROSS APPLY STRING_SPLIT(t.A, ',') AS s
+  )
+  SELECT T1.value, T2.value
+  FROM SplitValues AS T1
+  CROSS JOIN SplitValues AS T2;
+  ```  
 
-## 5. The Complete SQL Query
-This query combines all three steps into a single, efficient statement.
+> [!TIP]  
+> Using a CTE (`SplitValues`) makes the query more readable and reusable.  
+
+### 4.3 **Step 3: Filter for Unique, Non-Identical Pairs**  
+The final step is to apply a filter to remove unwanted pairs.  
+- **To remove self-pairing (e.g., 1,1)**: We use `WHERE T1.value <> T2.value`.  
+- **To remove symmetrical duplicates (e.g., keep 1,2 but remove 2,1)**: A simple and elegant trick is to use `WHERE T1.value < T2.value`. This condition automatically handles both requirements: it excludes pairs where the values are equal, and it ensures that only one of the two symmetrical pairs is selected (the one where the first element is smaller than the second).  
+
+> [!IMPORTANT]  
+> The condition `T1.value < T2.value` is key to ensuring uniqueness and avoiding duplicates.  
+
+---
+
+## 5. **The Complete SQL Query**  
+This query combines all three steps into a single, efficient statement.  
 
 ```sql
 -- Use a CTE to hold the split values for clarity
@@ -107,4 +127,14 @@ JOIN -- A simple JOIN here works like a CROSS JOIN for this single-source data
     SplitValues AS T2 ON T1.num < T2.num -- The key filtering condition
 ORDER BY
     A, B;
-```
+```  
+
+> [!TIP]  
+> Casting `s.value` to `INT` ensures proper numeric comparison and ordering.  
+
+---
+
+This solution demonstrates advanced SQL techniques, including string splitting, combinatorial pairing, and conditional filtering, making it a valuable addition to your SQL toolkit.  
+
+> [!TIP]  
+> Practice this pattern with different datasets to reinforce your understanding of string manipulation and combinatorial logic in SQL.  
