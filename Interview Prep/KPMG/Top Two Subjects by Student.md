@@ -1,4 +1,4 @@
-# SQL Interview Question: Top Two Subjects by Student  
+# Top Two Subjects by Student  
 
 ## 1. **Problem Statement**  
 Given a `students` table with:  
