@@ -14,8 +14,6 @@ We need to:
 > [!NOTE]  
 > This problem tests your ability to use window functions, filtering, and aggregation in SQL.  
 
----
-
 ## 2. **Solution 1: Using Subquery with ROW_NUMBER()**  
 ```sql
 SELECT
@@ -50,8 +48,6 @@ GROUP BY student_name;
 > [!IMPORTANT]  
 > `SUM(marks)` aggregates the marks of the top two subjects for each student.  
 
----
-
 ## 3. **Solution 2: Using Common Table Expression (CTE)**  
 ```sql
 WITH ranked_students AS (
@@ -83,8 +79,6 @@ GROUP BY student_name;
 
 > [!TIP]  
 > `SUM(marks)` calculates the total marks of the top two subjects.  
-
----
 
 ## 4. **Key Concepts Explained**  
 
@@ -119,16 +113,12 @@ GROUP BY student_name;
 > [!IMPORTANT]  
 > Choose the approach based on query complexity and readability.  
 
----
-
 ## 5. **Additional Notes**  
 - **Handling Ties**: If two subjects have the same marks, `ROW_NUMBER()` will assign different ranks based on the order of rows in the table.  
 - **Performance**: Both solutions are efficient for moderate-sized datasets. For very large tables, consider indexing the `student_name` and `marks` columns.  
 
 > [!WARNING]  
 > Ensure the `marks` column is properly indexed if the table is large to improve performance.  
-
----
 
 This solution demonstrates common SQL patterns for:  
 - Ranking data within groups  
