@@ -40,7 +40,7 @@ FROM Customers
 )
 DELETE FROM CTE WHERE rn>1;
 ```
-[!NOTE]
+
 > What are we doing here? We are assigning a row number to each individual values so that if there are duplicates we can assign the same value instead of a tie breaker.
 > Then using this duplicate row number we take the count if it more than 1, we delete.
 
