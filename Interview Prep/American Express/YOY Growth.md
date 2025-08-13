@@ -32,9 +32,9 @@ Join the CTE to itself to align each year's data with the previous year's data u
 
 ### 3.5 **Calculate YoY Growth Percentage**  
 Use the formula:  
-\[
+$$\[
 \text{YoY Growth} = \left( \frac{\text{current\_year\_revenue} - \text{previous\_year\_revenue}}{\text{previous\_year\_revenue}} \right) \times 100
-\]  
+\]$$ 
 
 ---
 
