@@ -45,3 +45,16 @@ DELETE FROM CTE WHERE rn>1;
 > Then using this duplicate row number we take the count if it more than 1, we delete.
 Your output will be something like this
 > <img width="628" height="717" alt="image" src="https://github.com/user-attachments/assets/038adce9-3540-4215-9ed9-27ceaafd374a" />
+
+
+The second method is use Group BY and HAVING Clause
+So essentially you can group by the needed columns and take a count of these columns,
+
+```SQL
+SELECT Customername, City, COUNT(*) AS D
+FROM Customers
+GROUP BY Customername, City
+HAVING COUNT(*) >1;
+```
+your output would call out the duplicate values for further investigation
+<img width="510" height="142" alt="image" src="https://github.com/user-attachments/assets/8bcc6fe9-3a67-4d17-86a1-982fb0ac90d8" />
