@@ -1,4 +1,4 @@
-# SQL Time Series Data Analysis  
+# Time Series Data Analysis  
 
 ## 1. **Problem Statement**  
 Given a `temperature_readings` table with:  
