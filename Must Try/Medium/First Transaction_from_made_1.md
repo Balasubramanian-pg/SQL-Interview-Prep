@@ -1,30 +1,14 @@
----
-Company:
-  - Etsy
-Difficulty: Intermediate
-Created:
-Status:
-Category:
-Sub category:
-Question Link:
----
+# First Transaction Spend Analysis
 
-Of course! This is a fantastic query that uses a window function within a Common Table Expression (CTE). It's a modern and highly efficient way to solve this common type of "first event" analysis.
-
-Here is the complete breakdown.
-
-***
-
-### 1. The Question
-
-The business question being asked by this SQL query is:
+## 1. The Business Question
+The objective of this query is to analyze the behavior of new users at the point of their very first transaction. The specific business question is:
 
 **"How many unique users made their very first transaction with a value of $50 or more?"**
 
----
+> [!IMPORTANT]
+> This analysis is focused exclusively on the **first transaction**. Any subsequent purchases, regardless of their value, are not considered. The query must correctly identify and isolate only the initial transaction for every user.
 
-### 2. Table Schema
-
+## 2. Assumed Table Schema
 The query references a single table, `user_transactions`. A plausible schema for this table would be:
 
 ```sql
@@ -36,16 +20,20 @@ CREATE TABLE user_transactions (
     spend            DECIMAL(10, 2) NOT NULL,-- The amount of money spent
     transaction_date TIMESTAMP NOT NULL      -- The exact date and time of the transaction
 );
-
--- A composite index on the columns used in the window function is crucial for performance.
-CREATE INDEX idx_user_trans_date ON user_transactions (user_id, transaction_date);
 ```
 
----
+> [!TIP]
+> For this query to perform well, a composite index on the columns used in the window function (`user_id`, `transaction_date`) is crucial. This allows the database to efficiently partition and order the data without a full table sort.
+>
+> `CREATE INDEX idx_user_trans_date ON user_transactions (user_id, transaction_date);`
 
-### 3. Structured SQL Query (Method 1: Using a Window Function in a CTE)
+## 3. Solution Approaches
 
-This is your original query, which is an excellent and highly readable way to solve the problem.
+### 3.1. Method 1: Using a Window Function in a CTE (Recommended)
+This is a modern, efficient, and highly readable way to solve this common type of "first event" analysis.
+
+> [!NOTE]
+> This approach uses a Common Table Expression (CTE) to first rank all transactions for each user. This pre-processing step makes the final filtering logic simple and clear.
 
 ```sql
 -- Step 1: Rank all transactions for each user chronologically.
@@ -53,8 +41,10 @@ WITH transaction_ranking AS (
     SELECT
         user_id,
         spend,
-        transaction_date,
-        DENSE_RANK() OVER (PARTITION BY user_id ORDER BY transaction_date ASC) AS transaction_num
+        DENSE_RANK() OVER (
+          PARTITION BY user_id
+          ORDER BY transaction_date ASC
+        ) AS transaction_num
     FROM
         user_transactions
 )
@@ -68,33 +58,29 @@ WHERE
     AND spend >= 50;
 ```
 
----
+#### 3.1.1. Explanation
 
-### 4. Explanation of the Query
+1.  **The `transaction_ranking` CTE**:
+    -   This CTE is the core of the solution. It assigns a chronological rank to every transaction for every user.
+    -   `DENSE_RANK() OVER (...)`: This is the window function that generates the rank.
+        -   `PARTITION BY user_id`: This is a critical instruction. It tells the function to operate in separate groups for each `user_id`. The ranking will restart at `1` for every new user.
+        -   `ORDER BY transaction_date ASC`: Within each user's partition, transactions are sorted by date, ensuring the earliest one comes first.
+    -   `DENSE_RANK()` is used here. If a user has two transactions at the exact same earliest timestamp, both will be ranked as `1`. This is the correct behavior for finding all "first" transactions.
 
-This query uses a two-step process, made clear by the CTE, to find the answer efficiently.
+2.  **The Final `SELECT` Statement**:
+    -   This query operates on the pre-ranked data from the CTE.
+    -   `WHERE transaction_num = 1`: This filter isolates only the very first transaction(s) for each user.
+    -   `AND spend >= 50`: This further filters that set, keeping only the first transactions where the value was $50 or more.
+    -   `COUNT(DISTINCT user_id)`: Finally, it counts the number of unique `user_id`s that remain. `DISTINCT` is important in the rare case that a user had multiple "first" transactions (at the same time) that both met the spend criteria.
 
-**Step 1: The `transaction_ranking` CTE**
+> [!CAUTION]
+> While `RANK()` would also work, `DENSE_RANK()` is a safe choice. `ROW_NUMBER()` would be incorrect if a user had two transactions at the exact same time, as it would arbitrarily assign one as rank 1 and the other as rank 2, potentially causing you to miss a valid first transaction.
 
-1.  **`DENSE_RANK() OVER (...) AS transaction_num`**: This is the core of the logic. It's a **window function** that assigns a rank to each transaction.
-    *   `PARTITION BY user_id`: This tells the function to perform the ranking independently for each user. The rank will restart at `1` for every new `user_id`.
-    *   `ORDER BY transaction_date ASC`: Within each user's "partition" (all their transactions), the rows are ordered by `transaction_date` from earliest to latest.
-    *   `DENSE_RANK()`: This assigns the rank. The earliest transaction for a user gets rank `1`. If two transactions happen at the exact same time, they both get rank `1`, and the next transaction gets rank `2`.
-2.  **Result of CTE**: The `transaction_ranking` CTE is a temporary table that contains all the original transaction data, plus a new column `transaction_num` that identifies the chronological order of each transaction for every user.
+### 3.2. Method 2: Using a Subquery with `GROUP BY` and `JOIN`
+A more traditional way to solve this, without window functions, is to first find the minimum transaction date for each user and then join that information back.
 
-**Step 2: The Final `SELECT` Statement**
-
-1.  **`FROM transaction_ranking`**: The query now operates on our temporary, ranked data.
-2.  **`WHERE transaction_num = 1 AND spend >= 50`**: This is the filtering step.
-    *   `transaction_num = 1`: This keeps only the row(s) that represent the very first transaction(s) for each user.
-    *   `AND spend >= 50`: It then further filters that set, keeping only the first transactions where the spend was 50 or more.
-3.  **`SELECT COUNT(DISTINCT user_id) AS users`**: Finally, it counts the number of unique `user_id`s that remain after the filtering, giving the final answer.
-
----
-
-### 5. Another SQL Method (Method 2: Using a Subquery with `GROUP BY` and `JOIN`)
-
-A more traditional way to solve this, without window functions, is to first find the minimum transaction date for each user and then join that information back to the main table.
+> [!TIP]
+> This method is very explicit. It involves creating a temporary "derived table" that contains the first transaction date for every user, which is then used to filter the main table.
 
 ```sql
 SELECT
@@ -117,20 +103,26 @@ WHERE
     t.spend >= 50;
 ```
 
----
-
-### 6. Explanation of the Alternative Query
-
-This method achieves the same result by explicitly finding the first transaction and its details.
+#### 3.2.1. Explanation
 
 1.  **The Subquery (Derived Table)**:
-    *   `SELECT user_id, MIN(transaction_date) ... GROUP BY user_id`: This inner query is executed first. It groups all transactions by `user_id` and finds the earliest (`MIN`) `transaction_date` for each one.
-    *   The result is a temporary table aliased as `first_transactions` with two columns: `user_id` and their corresponding `first_transaction_date`.
+    -   The inner `SELECT ... GROUP BY user_id` query is executed first. It finds the earliest (`MIN`) `transaction_date` for each unique `user_id`.
+    -   This produces a temporary table named `first_transactions` containing each user and their specific first transaction timestamp.
 
 2.  **The Outer Query**:
-    *   `FROM user_transactions AS t INNER JOIN first_transactions ...`: The main `user_transactions` table is joined to our derived table.
-    *   **`ON t.user_id = first_transactions.user_id AND t.transaction_date = first_transactions.first_transaction_date`**: This is a multi-part join key. It finds the full row from the original table that matches *both* the user ID and their specific first transaction date. This effectively isolates the first transaction record for every user.
-    *   **`WHERE t.spend >= 50`**: This clause then filters these first-transaction records, keeping only those where the spend was 50 or more.
-    *   **`SELECT COUNT(DISTINCT t.user_id) ...`**: Finally, it counts the unique users who are left.
+    -   The main `user_transactions` table (`t`) is joined to this temporary `first_transactions` table.
+    -   **The `ON` Clause**: The join condition `ON t.user_id = ... AND t.transaction_date = ...` is crucial. It finds the full row(s) from the original table that match *both* the user and their specific first transaction date, effectively isolating the first transaction record(s).
 
-The window function approach is often more concise and can be more easily extended to find the 2nd, 3rd, or Nth transaction, but the `GROUP BY`/`JOIN` method is a very solid and fundamental SQL pattern.
+> [!WARNING]
+> A common mistake is to only join on `user_id`. You must join on both the user and the timestamp to uniquely identify the first transaction record.
+
+3.  **Final Filtering and Counting**:
+    -   `WHERE t.spend >= 50`: This clause filters these first-transaction records.
+    -   `COUNT(DISTINCT t.user_id)`: Counts the unique users who are left.
+
+## 4. Comparison of Methods
+-   **Method 1 (Window Function)**: Generally more concise, modern, and readable once you are familiar with the syntax. It can be easily extended to find the 2nd, 3rd, or Nth transaction by simply changing `WHERE transaction_num = 1`.
+-   **Method 2 (`GROUP BY`/`JOIN`)**: A very solid and fundamental SQL pattern that works on virtually all database systems. It can be more verbose but is sometimes seen as more explicit.
+
+> [!IMPORTANT]
+> The window function approach is often more performant as the database can rank and filter in a more optimized, single-pass operation compared to the aggregate-then-join pattern. It should be the preferred method in modern SQL environments.
