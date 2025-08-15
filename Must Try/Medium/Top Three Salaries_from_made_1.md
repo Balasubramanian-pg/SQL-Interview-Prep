@@ -1,136 +1,115 @@
----
-Created: 2025-06-28T18:34
-Company:
-  -
-Difficulty:
-Status:
-Category:
-Sub category:
-Question Link:
----
-As part of an ongoing analysis of salary distribution within the company, your manager has requested a report identifying high earners in  
-each department. A 'high earner' within a department is defined as an employee with a salary ranking among the top three salaries within that  
-department.  
+# Department High Earners
 
-You're tasked with identifying these high earners across all departments. Write a query to display the employee's name along with their department name and salary. In case of duplicates, sort the results of department name in ascending order, then by salary in descending order. If multiple employees have the same salary, then order  
-them alphabetically.  
+## 1. Problem Statement
 
-Note: Ensure to utilize the appropriate ranking window function to handle duplicate salaries effectively.
+### 1.1. Objective
+As part of an ongoing analysis of salary distribution within the company, your manager has requested a report identifying high earners in each department. You're tasked with identifying these high earners across all departments.
 
-_As of June 18th, we have removed the requirement for unique salaries and revised the sorting order for the results._
+### 1.2. Definition
+-   A 'high earner' within a department is defined as an employee with a salary ranking among the **top three distinct salaries** within that department.
 
-### `employee` Schema:
+> [!IMPORTANT]
+> The query must correctly handle duplicate salaries. If multiple employees share one of the top three salary amounts, they should all be included in the results.
 
-|   |   |   |
-|---|---|---|
+### 1.3. Sorting Requirement
+-   In case of duplicates, the final results should be sorted by department name (ascending), then by salary (descending), and finally by the employee's name (alphabetically).
+
+## 2. Input Schemas
+
+> [!TIP]
+> The two tables are linked by the `department_id` column. An `INNER JOIN` will be used to combine them to get the department names for each employee.
+
+### 2.1. `employee` Schema:
+
 |column_name|type|description|
+|---|---|---|
 |employee_id|integer|The unique ID of the employee.|
 |name|string|The name of the employee.|
 |salary|integer|The salary of the employee.|
 |department_id|integer|The department ID of the employee.|
 |manager_id|integer|The manager ID of the employee.|
 
-### `employee` Example Input:
+### 2.2. `department` Schema:
 
-|   |   |   |   |   |
-|---|---|---|---|---|
-|employee_id|name|salary|department_id|manager_id|
-|1|Emma Thompson|3800|1|6|
-|2|Daniel Rodriguez|2230|1|7|
-|3|Olivia Smith|2000|1|8|
-|4|Noah Johnson|6800|2|9|
-|5|Sophia Martinez|1750|1|11|
-|6|Liam Brown|13000|3||
-|7|Ava Garcia|12500|3||
-|8|William Davis|6800|2||
-|9|Isabella Wilson|11000|3||
-|10|James Anderson|4000|1|11|
-
-### `department` Schema:
-
-|   |   |   |
-|---|---|---|
 |column_name|type|description|
+|---|---|---|
 |department_id|integer|The department ID of the employee.|
 |department_name|string|The name of the department.|
 
-### `department` Example Input:
+## 3. Example
 
-|   |   |
-|---|---|
+### 3.1. Example Input:
+`employee` table:
+|employee_id|name|salary|department_id|
+|---|---|---|---|
+|1|Emma Thompson|3800|1|
+|2|Daniel Rodriguez|2230|1|
+|3|Olivia Smith|2000|1|
+|4|Noah Johnson|6800|2|
+|5|Sophia Martinez|1750|1|
+|...|...|...|...|
+|8|William Davis|6800|2|
+|...|...|...|...|
+|10|James Anderson|4000|1|
+
+`department` table:
 |department_id|department_name|
+|---|---|
 |1|Data Analytics|
 |2|Data Science|
+|3|Engineering|
 
-### Example Output:
+### 3.2. Example Output:
 
-|   |   |   |
-|---|---|---|
 |department_name|name|salary|
+|---|---|---|
 |Data Analytics|James Anderson|4000|
 |Data Analytics|Emma Thompson|3800|
 |Data Analytics|Daniel Rodriguez|2230|
 |Data Science|Noah Johnson|6800|
 |Data Science|William Davis|6800|
 
-The output displays the high earners in each department.
+### 3.3. Explanation
+-   In the **Data Analytics** department, the top three salaries are $4,000 (James), $3,800 (Emma), and $2,230 (Daniel).
+-   In the **Data Science** department, the top salary is $6,800. Since two employees, Noah and William, share this salary, they are both included. Noah is listed first due to alphabetical sorting.
 
-- In the Data Analytics deaprtment, James Anderson leads with a salary of $4,000, followed by Emma Thompson earning $3,800, and Daniel  
-    Rodriguez with $2,230.  
-    
-- In the Data Science department, both Noah Johnson and William Davis earn $6,800, with Noah listed before William due to alphabetical ordering.
+## 4. Conceptual Approach
+To solve this, we need to rank employees within each department by their salary and then select the top three ranks.
 
----
+1.  **Join Data**: Combine the `employee` and `department` tables to get employee names, salaries, and their corresponding department names in one place.
+2.  **Rank Salaries**: Use a window function to rank employees by salary *within* each department. The ranking must handle ties correctly.
+3.  **Filter Top 3**: Select only the employees whose salary rank is less than or equal to 3.
+4.  **Sort Results**: Order the final output according to the specified multi-level criteria.
 
-Looking at this problem, I need to:
+### 4.1. Choosing the Right Ranking Function
+The key to this problem is selecting the correct window function to handle potential salary ties.
 
-1. Join employee and department tables
-2. Rank employees by salary within each department (handling ties appropriately)
-3. Select top 3 ranked employees per department
-4. Sort results by department name (ascending), salary (descending), then name (alphabetically)
+> [!IMPORTANT]
+> `DENSE_RANK()` is the ideal choice for this scenario. It ensures that if multiple employees have the same salary, they receive the same rank, and critically, the next rank number is sequential (no gaps are created).
 
-The key insight is choosing the right ranking function. Since we want the top 3 salaries and need to handle ties properly, I'll use `DENSE_RANK()` which ensures that if multiple people have the same salary, they get the same rank, and the next rank continues sequentially.This query solves the problem by:
+> [!NOTE]
+> Let's compare the ranking functions for a salary list of (100k, 100k, 90k):
+> - `ROW_NUMBER()`: Would give ranks 1, 2, 3. Incorrect, as it arbitrarily separates the tied salaries.
+> - `RANK()`: Would give ranks 1, 1, 3. Incorrect, as it would skip rank 2, potentially excluding the true third-highest salary.
+> - `DENSE_RANK()`: Would give ranks 1, 1, 2. This is correct. It groups the ties and ensures we can reliably select the top N *distinct* salary levels.
 
-1. **CTE (**`**ranked_employees**`**)**:
-    - Joins `employee` and `department` tables to get department names
-    - Uses `DENSE_RANK()` window function to rank employees by salary within each department
-    - `PARTITION BY e.department_id` ensures ranking is done separately for each department
-    - `ORDER BY e.salary DESC` ranks from highest to lowest salary
-2. **Main Query**:
-    - Filters for `salary_rank <= 3` to get the top 3 salary ranks per department
-    - Orders results by:
-        - `department_name ASC` (alphabetical order of departments)
-        - `salary DESC` (highest salaries first within each department)
-        - `name ASC` (alphabetical order for employees with same salary)
+## 5. SQL Solution
 
-**Why DENSE_RANK()?**
-
-- `DENSE_RANK()` handles ties properly - if two employees have the same salary, they both get the same rank
-- Unlike `ROW_NUMBER()`, it doesn't arbitrarily break ties
-- Unlike `RANK()`, it doesn't skip ranks after ties (e.g., if two people tie for rank 1, the next person gets rank 2, not rank 3)
-
-**Tracing through the example**:
-
-- **Data Analytics**: James Anderson (4000, rank 1), Emma Thompson (3800, rank 2), Daniel Rodriguez (2230, rank 3)
-- **Data Science**: Noah Johnson and William Davis both have 6800 (rank 1), with Noah listed first alphabetically
-
-This matches the expected output perfectly!
-
-```SQL
+```sql
 WITH ranked_employees AS (
-  SELECT 
+  SELECT
     d.department_name,
     e.name,
     e.salary,
     DENSE_RANK() OVER (
-      PARTITION BY e.department_id 
+      PARTITION BY e.department_id
       ORDER BY e.salary DESC
     ) AS salary_rank
-  FROM employee e
-  INNER JOIN department d ON e.department_id = d.department_id
+  FROM employee AS e
+  INNER JOIN department AS d
+    ON e.department_id = d.department_id
 )
-
-SELECT 
+SELECT
   department_name,
   name,
   salary
@@ -138,3 +117,29 @@ FROM ranked_employees
 WHERE salary_rank <= 3
 ORDER BY department_name ASC, salary DESC, name ASC;
 ```
+
+## 6. Code Breakdown
+
+### 6.1. CTE: `ranked_employees`
+This Common Table Expression is the core of the solution, preparing the ranked data.
+-   **`INNER JOIN`**: It first joins the `employee` and `department` tables.
+-   **`DENSE_RANK() OVER (...)`**: This window function assigns a rank to each employee.
+    -   `PARTITION BY e.department_id`: This is the most critical clause. It tells the function to perform the ranking independently for each department, resetting the rank counter for each new `department_id`.
+
+> [!CAUTION]
+> Without the `PARTITION BY` clause, the query would rank all employees across the entire company, which would not answer the question of finding the top earners *within each department*.
+
+    -   `ORDER BY e.salary DESC`: This sorts employees within each department partition by their salary in descending order, so the highest salary gets rank 1.
+
+### 6.2. Final `SELECT` Statement
+This part of the query filters and sorts the ranked data to produce the final report.
+-   `FROM ranked_employees`: It queries the temporary result set created by the CTE.
+-   `WHERE salary_rank <= 3`: This is the filter that selects only the employees who are in one of the top three distinct salary tiers for their department.
+
+> [!TIP]
+> This simple filter is possible because of the careful work done by `DENSE_RANK()` in the previous step.
+
+-   **`ORDER BY department_name ASC, salary DESC, name ASC`**: This multi-level sorting clause is crucial for meeting the output requirements.
+    -   It first sorts by `department_name` alphabetically.
+    -   Then, within each department, it sorts by `salary` from highest to lowest.
+    -   Finally, if two employees in the same department have the same salary, it sorts them by `name` alphabetically.
