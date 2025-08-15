@@ -1,122 +1,72 @@
----
-Created: 2025-06-28T18:34
-Company:
-  -
-Difficulty:
-Status:
-Category:
-Sub category:
-Question Link:
----
-This is the same question as problem #28 in the SQL Chapter of [Ace the Data Science Interview](https://amzn.to/3kF79Fx)!
+# Odd vs. Even Numbered Measurements
 
-Assume you're given a table with measurement values obtained from a Google sensor over multiple days with measurements taken multiple times  
-within each day.  
+## 1. Problem Statement
 
-Write a query to calculate the sum of odd-numbered and even-numbered measurements separately for a particular day and display the results in  
-two different columns. Refer to the Example Output below for the desired format.  
+### 1.1. Objective
+Assume you're given a table with measurement values obtained from a Google sensor over multiple days, with measurements taken multiple times within each day.
 
-Definition:
+Write a query to calculate the sum of odd-numbered and even-numbered measurements separately for a particular day and display the results in two different columns.
 
-- Within a day, measurements taken at 1st, 3rd, and 5th times are considered odd-numbered measurements, and measurements taken at 2nd,  
-    4th, and 6th times are considered even-numbered measurements.  
-    
+### 1.2. Definition
+-   Within a day, measurements taken at 1st, 3rd, and 5th times are considered odd-numbered measurements, and measurements taken at 2nd, 4th, and 6th times are considered even-numbered measurements.
 
-_Effective April 15th, 2023, the question and solution for this question have been revised._
+> [!IMPORTANT]
+> The definition of "odd-numbered" and "even-numbered" is based on the **chronological order** of measurements within a single day. This is a crucial requirement that necessitates the use of ranking or window functions.
 
-### `measurements` Table:
+### 1.3. Input Table: `measurements`
 
-|   |   |
-|---|---|
 |Column Name|Type|
+|---|---|
 |measurement_id|integer|
 |measurement_value|decimal|
 |measurement_time|datetime|
 
-### `measurements` Example Input:
+### 1.4. Example
 
-|   |   |   |
-|---|---|---|
+#### 1.4.1. `measurements` Example Input:
+
 |measurement_id|measurement_value|measurement_time|
+|---|---|---|
 |131233|1109.51|07/10/2022 09:00:00|
 |135211|1662.74|07/10/2022 11:00:00|
 |523542|1246.24|07/10/2022 13:15:00|
 |143562|1124.50|07/11/2022 15:00:00|
 |346462|1234.14|07/11/2022 16:45:00|
 
-### Example Output:
+#### 1.4.2. Example Output:
 
-|   |   |   |
-|---|---|---|
 |measurement_day|odd_sum|even_sum|
+|---|---|---|
 |07/10/2022 00:00:00|2355.75|1662.74|
 |07/11/2022 00:00:00|1124.50|1234.14|
 
-### Explanation
+## 2. Conceptual Approach
+To solve this, we need to first rank the measurements within each day and then use conditional aggregation to sum the odd-ranked and even-ranked values separately.
 
-Based on the results,
+1.  **Extract the Day**: We need to isolate the day component from the `measurement_time` column so we can group by it later.
+2.  **Rank Measurements**: Use the `ROW_NUMBER()` window function to assign a sequential number (1, 2, 3...) to each measurement within a single day, ordered by `measurement_time`.
+3.  **Classify Odd/Even**: Use the modulus operator (`%` or `MOD()`) on the assigned row numbers to determine if a measurement is odd or even.
+4.  **Conditional Aggregation**: Use `CASE` statements inside `SUM()` to calculate the totals for odd and even measurements in separate columns.
 
-- On 07/10/2022, the sum of the odd-numbered measurements is 2355.75, while the sum of the even-numbered measurements is 1662.74.
-- On 07/11/2022, there are only two measurements available. The sum of the odd-numbered measurements is 1124.50, and the sum of the  
-    even-numbered measurements is 1234.14.  
-    
+> [!TIP]
+> The `ROW_NUMBER()` function is essential here. `RANK()` and `DENSE_RANK()` would not work because if two measurements are taken at the exact same time, they would get the same rank, which would disrupt the odd/even sequence. `ROW_NUMBER()` is guaranteed to be unique.
 
-The dataset you are querying against may have different input & output - **this is just an example**!
+## 3. SQL Solution
 
-  
-
-Looking at this problem, I need to:
-
-1. Group measurements by day
-2. Assign row numbers to measurements within each day (ordered by measurement time)
-3. Classify measurements as odd-numbered (1st, 3rd, 5th, etc.) or even-numbered (2nd, 4th, 6th, etc.)
-4. Sum the values separately for odd and even numbered measurementsThis query solves the problem by:
-5. **CTE (**`**numbered_measurements**`**)**:
-    - Extracts the date from `measurement_time` using `DATE()` function
-    - Uses `ROW_NUMBER()` window function to assign sequential numbers to measurements within each day
-    - `PARTITION BY DATE(measurement_time)` ensures numbering restarts for each day
-    - `ORDER BY measurement_time` ensures measurements are numbered chronologically
-6. **Main Query**:
-    - Uses conditional aggregation with `CASE WHEN` statements
-    - **Odd-numbered measurements**: `measurement_order % 2 = 1` (1st, 3rd, 5th, etc.)
-    - **Even-numbered measurements**: `measurement_order % 2 = 0` (2nd, 4th, 6th, etc.)
-    - `SUM()` calculates the total for each category
-    - Groups by `measurement_day` to get results per day
-
-**Tracing through the example**:
-
-**07/10/2022**:
-
-- 1st measurement (09:00): 1109.51 → odd
-- 2nd measurement (11:00): 1662.74 → even
-- 3rd measurement (13:15): 1246.24 → odd
-- Odd sum: 1109.51 + 1246.24 = 2355.75
-- Even sum: 1662.74
-
-**07/11/2022**:
-
-- 1st measurement (15:00): 1124.50 → odd
-- 2nd measurement (16:45): 1234.14 → even
-- Odd sum: 1124.50
-- Even sum: 1234.14
-
-This matches the expected output perfectly!
-
-  
-
-```SQL
+```sql
 WITH numbered_measurements AS (
-  SELECT 
+  -- Step 1 & 2: Extract the date and rank measurements chronologically within each day.
+  SELECT
     DATE(measurement_time) AS measurement_day,
     measurement_value,
     ROW_NUMBER() OVER (
-      PARTITION BY DATE(measurement_time) 
+      PARTITION BY DATE(measurement_time)
       ORDER BY measurement_time
     ) AS measurement_order
   FROM measurements
 )
-
-SELECT 
+-- Step 3 & 4: Calculate the sum of odd-numbered and even-numbered measurements separately.
+SELECT
   measurement_day,
   SUM(CASE WHEN measurement_order % 2 = 1 THEN measurement_value ELSE 0 END) AS odd_sum,
   SUM(CASE WHEN measurement_order % 2 = 0 THEN measurement_value ELSE 0 END) AS even_sum
@@ -124,3 +74,32 @@ FROM numbered_measurements
 GROUP BY measurement_day
 ORDER BY measurement_day;
 ```
+
+## 4. Code Breakdown
+
+### 4.1. CTE: `numbered_measurements`
+This CTE performs the initial data transformation by ranking the measurements.
+-   `DATE(measurement_time) AS measurement_day`: This extracts the date part from the timestamp, which is used for partitioning the data by day.
+-   `ROW_NUMBER() OVER (...)`: This assigns the chronological order of the measurements.
+    -   `PARTITION BY DATE(measurement_time)`: This is crucial. It tells the ranking function to reset the counter for each new day.
+    -   `ORDER BY measurement_time`: This orders the rows within each day by time, ensuring that the earliest measurement gets `measurement_order = 1`.
+
+> [!NOTE]
+> The output of this CTE includes `measurement_day`, `measurement_value`, and the `measurement_order` (1, 2, 3...) for each measurement within a day.
+
+### 4.2. Main `SELECT` Statement
+This part calculates the final sums using conditional aggregation on the results of the CTE.
+
+-   `GROUP BY measurement_day`: This aggregates the results for each day.
+-   **Conditional Aggregation (`SUM(CASE WHEN ...)`):**
+    -   `measurement_order % 2 = 1`: This condition checks if the `measurement_order` (1st, 2nd, 3rd, etc.) is odd. The modulus operator (`%`) returns the remainder after division. If the order is odd, the remainder when divided by 2 is 1.
+    -   `measurement_order % 2 = 0`: This condition checks if the `measurement_order` is even.
+
+> [!IMPORTANT]
+> The `CASE` statements are used inside the `SUM` function. If the condition is met (odd or even), the `measurement_value` is included in the sum; otherwise, `0` is used. This allows us to calculate the two sums separately in parallel.
+
+-   `odd_sum` and `even_sum`: The `SUM()` functions apply the conditional logic, resulting in two separate columns for the totals.
+-   `ORDER BY measurement_day`: Ensures the final output is chronologically ordered by day.
+
+> [!TIP]
+> This pattern of using `ROW_NUMBER()` over a partition and then applying conditional aggregation based on the row number's parity is a standard and efficient way to handle "alternate row" or "even/odd" analysis problems.
