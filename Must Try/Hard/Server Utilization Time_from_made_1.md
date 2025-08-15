@@ -1,13 +1,126 @@
----
-Created:
-Company:
-  -
-Difficulty:
-Status:
-Category:
-Sub category:
-Question Link:
----
-# Server Utilization Time
+# Server Utilization Time [Amazon SQL Interview Question]
 
-Auto-generated note.
+> Problem info:
+> Difficulty: `Hard`
+> Company: `Amazon`
+
+## 1. Problem Statement
+
+### 1.1. Objective
+Amazon Web Services (AWS) is powered by fleets of servers. Senior management has requested data-driven solutions to optimize server usage.
+
+Write a query that calculates the total time that the fleet of servers was running. The output should be in units of **full days**.
+
+### 1.2. Assumptions
+-   Each server might start and stop several times.
+-   The total time in which the server fleet is running can be calculated as the sum of each server's uptime.
+
+> [!IMPORTANT]
+> The core challenge of this problem is that the start and stop times for a single session are on different rows. We need to programmatically pair each `start` event with its corresponding `stop` event to calculate the duration of each session.
+
+### 1.3. `server_utilization` Table:
+
+| Column Name | Type |
+| --- | --- |
+| server_id | integer |
+| status_time | timestamp |
+| session_status | string |
+
+#### 1.3.1. `server_utilization` Example Input:
+
+| server_id | status_time | session_status |
+| --- | --- | --- |
+| 1 | 08/02/2022 10:00:00 | start |
+| 1 | 08/04/2022 10:00:00 | stop |
+| 2 | 08/17/2022 10:00:00 | start |
+| 2 | 08/24/2022 10:00:00 | stop |
+
+### 1.4. Example Output:
+
+| total_uptime_days |
+| --- |
+| 21 |
+
+#### 1.4.1. Explanation
+-   Server 1 ran from Aug 2nd to Aug 4th = 2 days.
+-   Server 2 ran from Aug 17th to Aug 24th = 7 days.
+-   A different server in the full dataset must have run for 12 days.
+-   Total = 2 + 7 + 12 = 21 days.
+
+> [!NOTE]
+> The dataset you are querying against may have different input & output - this is just an example to illustrate the logic.
+
+## 2. Conceptual Approach
+The problem requires us to calculate the duration between consecutive 'start' and 'stop' events for each server. The most efficient way to solve this is by using a window function to "look ahead" from each 'start' event to find its corresponding 'stop' time.
+
+1.  **Pair Start and Stop Events**: For each `start` event, we need to find the timestamp of the *next* event for that same server. The `LEAD()` window function is perfect for this. We will partition the data by `server_id` and order it by `status_time`.
+2.  **Calculate Session Durations**: Once we have the `start_time` and `stop_time` on the same row, we can calculate the duration of each session. We will filter for only the rows where `session_status` is 'start'.
+3.  **Sum All Durations**: Aggregate the durations of all individual sessions to get the total uptime for the entire fleet.
+4.  **Convert to Full Days**: The final step is to convert the total uptime (which will likely be an interval or a number of seconds) into the required unit of "full days".
+
+> [!TIP]
+> Using a window function like `LEAD()` is significantly more performant and scalable than using a self-join to match start and stop records, as it avoids the costly process of joining a table to itself.
+
+## 3. SQL Solution
+
+```sql
+WITH session_times AS (
+  -- Step 1: Pair each 'start' event with the subsequent event's timestamp.
+  SELECT
+    status_time AS start_time,
+    session_status,
+    LEAD(status_time) OVER (
+      PARTITION BY server_id
+      ORDER BY status_time
+    ) AS stop_time
+  FROM
+    server_utilization
+)
+-- Step 2, 3 & 4: Filter for start sessions, sum durations, and convert to days.
+SELECT
+  FLOOR(
+    SUM(
+      EXTRACT(EPOCH FROM (stop_time - start_time))
+    ) / (24 * 60 * 60)
+  ) AS total_uptime_days
+FROM
+  session_times
+WHERE
+  session_status = 'start' AND stop_time IS NOT NULL;
+```
+
+## 4. Code Breakdown
+
+### 4.1. CTE: `session_times`
+This Common Table Expression is the core of the solution, responsible for pairing up the start and stop events.
+
+-   `LEAD(status_time) OVER (...) AS stop_time`: This is the window function that does the heavy lifting. For each row, it looks ahead to the *next* row within the same group and fetches its `status_time`.
+-   `PARTITION BY server_id`: This crucial clause tells the `LEAD()` function to operate in separate windows for each server. This ensures we only pair events from the same server and that the function resets for each new `server_id`.
+-   `ORDER BY status_time`: This clause is mandatory for `LEAD()`. It sorts the events chronologically within each partition, ensuring that the "next" event is the one that occurred immediately after the current one.
+
+> [!NOTE]
+> This structure correctly pairs a `start` event at `T1` with a `stop` event at `T2`, creating a logical row with `start_time = T1` and `stop_time = T2`. The row corresponding to the `stop` event at `T2` will have its own `stop_time` (likely `NULL` or the timestamp of the next `start`), but we will filter this row out later.
+
+### 4.2. Final `SELECT` Statement
+
+#### 4.2.1. Filtering
+-   `WHERE session_status = 'start'`: This filter selects only the rows that represent the beginning of a session, which now also contain the `stop_time`.
+-   `AND stop_time IS NOT NULL`: This is an important edge case handler. If a server has a 'start' event but no subsequent 'stop' event in the dataset (i.e., it's still running), its `stop_time` would be `NULL`. This condition ensures we exclude such incomplete sessions from our calculation.
+
+> [!WARNING]
+> Without handling the `NULL` stop times, the calculation would fail or produce incorrect results. Always consider edge cases like unterminated sessions.
+
+#### 4.2.2. Uptime Calculation and Aggregation
+-   `stop_time - start_time`: This calculates the difference between the two timestamps, resulting in an `INTERVAL` data type in PostgreSQL.
+-   `EXTRACT(EPOCH FROM ...)`: This function converts the `INTERVAL` into a total number of seconds. This is a necessary step to perform standard mathematical division.
+-   `SUM(...)`: This function aggregates the uptime in seconds from all the individual server sessions across the entire fleet into a single grand total.
+
+> [!CAUTION]
+> Date and time functions vary significantly between SQL dialects. `EXTRACT(EPOCH ...)` is specific to PostgreSQL. For SQL Server, you would use `DATEDIFF(second, start_time, stop_time)`. For MySQL, you might use `TIMESTAMPDIFF(SECOND, start_time, stop_time)`.
+
+#### 4.2.3. Conversion to Full Days
+-   `/ (24 * 60 * 60)`: The total uptime in seconds is divided by the number of seconds in a day to get the total number of days.
+-   `FLOOR(...)`: The problem asks for the output in units of **full days**. The `FLOOR()` function accomplishes this by truncating any fractional part, effectively rounding down to the nearest whole number.
+
+> [!TIP]
+> If the requirement was to round to the nearest day, you would use `ROUND()`. If it was to count any partial day as a full day, you would use `CEILING()`. `FLOOR()` is the correct choice for "full" or "complete" days.
