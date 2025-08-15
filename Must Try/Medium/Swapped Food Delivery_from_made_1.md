@@ -1,44 +1,27 @@
----
-Created: 2025-06-28T18:34
-Area:
-  - MECE
-Key Functions:
-  - CTE
-  - LEAD & LAG
-Company:
-  -
-Difficulty:
-Status:
-Category:
-Sub category:
-Question Link:
----
-Zomato is a leading online food delivery service that connects users with various restaurants and cuisines, allowing them to browse menus, place orders, and get meals delivered to their doorsteps.
+# Correcting Swapped Zomato Orders
 
-Recently, Zomato encountered an issue with their delivery system. Due to an error in the delivery driver instructions, each item's order was  
-swapped with the item in the subsequent row. As a data analyst, you're asked to correct this swapping error and return the proper pairing of  
-order ID and item.  
+## 1. Problem Statement
 
-If the last item has an odd order ID, it should remain as the last item in the corrected data. For example, if the last item is Order ID 7 Tandoori Chicken, then it should remain as Order ID 7 in the corrected  
-data.  
+### 1.1. Objective
+Zomato, a leading online food delivery service, encountered an issue with their delivery system. Due to an error, each item's order was swapped with the item in the subsequent row. As a data analyst, you're asked to write a query to correct this swapping error and return the proper pairing of `order_id` and `item`.
 
-In the results, return the correct pairs of order IDs and items.
+### 1.2. The Exception Rule
+If the very last item in the dataset has an odd `order_id`, it should remain as the last item in the corrected data and not be swapped. For example, if the last item is `Order ID 7, Tandoori Chicken`, it should remain as `Order ID 7` in the corrected data.
 
-### `orders` Schema:
+> [!IMPORTANT]
+> The core of the problem is to reverse a pairwise swap between adjacent rows, while carefully handling a specific edge case for the final odd-numbered order.
 
-|   |   |   |
-|---|---|---|
+### 1.3. Input Table: `orders`
+
 |column_name|type|description|
+|---|---|---|
 |order_id|integer|The ID of each Zomato order.|
 |item|string|The name of the food item in each order.|
 
-### `orders` Example Input:
+#### 1.3.1. `orders` Example Input:
 
-Here's a sample of the initial incorrect data:
-
-|   |   |
-|---|---|
 |order_id|item|
+|---|---|
 |1|Chow Mein|
 |2|Pizza|
 |3|Pad Thai|
@@ -47,13 +30,10 @@ Here's a sample of the initial incorrect data:
 |6|Burger|
 |7|Tandoori Chicken|
 
-### `orders` Example Output:
+### 1.4. `orders` Example Output:
 
-The corrected data should look like this:
-
-|   |   |
-|---|---|
 |corrected_order_id|item|
+|---|---|
 |1|Pizza|
 |2|Chow Mein|
 |3|Butter Chicken|
@@ -62,61 +42,79 @@ The corrected data should look like this:
 |6|Eggrolls|
 |7|Tandoori Chicken|
 
-Order ID 1 is now associated with Pizza and Order ID 2 is paired with Chow Mein. This adjustment ensures that each order is correctly aligned with its respective item, addressing the initial swapping error.
+#### 1.4.1. Explanation
+The original error meant Order 1 was incorrectly assigned 'Chow Mein' (which belongs to Order 2), and Order 2 was assigned 'Pizza' (which belongs to Order 1). The corrected output swaps these back. This pattern continues for orders 3 & 4 and 5 & 6. However, Order 7 is the last order and has an odd ID, so it remains unchanged.
 
-Order ID 7 remains unchanged and is still associated with Tandoori Chicken. This preserves the order sequence ensuring that the last odd order ID remains unaltered.
+## 2. Conceptual Approach
+To correct the swap, we need to re-assign items based on their position relative to each other.
+-   An **odd-numbered order** (like 1, 3, 5) needs to take the item from the *next* order.
+-   An **even-numbered order** (like 2, 4, 6) needs to take the item from the *previous* order.
+-   The special case—the **last order, if it's odd**—needs to keep its own item.
 
----
+> [!TIP]
+> This "look-ahead" and "look-behind" logic is a perfect use case for the `LEAD()` and `LAG()` window functions in SQL. They allow us to access data from adjacent rows within an ordered set.
 
-Looking at this problem, I need to understand the swapping pattern:
+To implement this, the process is:
+1.  Identify the maximum `order_id` in the dataset. This is needed to correctly handle the exception for the last odd-numbered order.
+2.  Use a `CASE` statement to apply the swapping logic based on whether an `order_id` is odd, even, or the special last odd case.
+3.  Use `LEAD()` to get the next item and `LAG()` to get the previous item.
 
-- Each item was swapped with the item in the subsequent row
-- So order 1's item went to order 2, order 2's item went to order 3, etc.
-- The last item (if it has an odd order ID) stays in place
+## 3. SQL Solution
 
-To correct this, I need to:
-
-1. For even order IDs: get the item from the previous order
-2. For odd order IDs: get the item from the next order (except for the last odd order)
-3. Keep the last odd order unchangedThis query corrects the swapping error by:
-4. **CTE (**`**max_order**`**)**: Finds the maximum order ID to identify the last order
-5. **Main Query Logic**:
-    - **Even order IDs**: Uses `LAG(item)` to get the item from the previous row (correcting the forward swap)
-    - **Odd order IDs that are the last order**: Keeps the original item unchanged
-    - **Other odd order IDs**: Uses `LEAD(item)` to get the item from the next row (correcting the forward swap)
-6. **Window Functions**:
-    - `LAG(item) OVER (ORDER BY order_id)`: Gets the item from the previous order
-    - `LEAD(item) OVER (ORDER BY order_id)`: Gets the item from the next order
-    - Both ordered by `order_id` to maintain sequence
-
-**Tracing through the example**:
-
-- Order 1 (odd, not last): Gets item from order 2 → Pizza
-- Order 2 (even): Gets item from order 1 → Chow Mein
-- Order 3 (odd, not last): Gets item from order 4 → Butter Chicken
-- Order 4 (even): Gets item from order 3 → Pad Thai
-- Order 5 (odd, not last): Gets item from order 6 → Burger
-- Order 6 (even): Gets item from order 5 → Eggrolls
-- Order 7 (odd, last): Keeps original item → Tandoori Chicken
-
-This perfectly matches the expected output, correcting the delivery system's swapping error while preserving the last odd order unchanged.
-
-```SQL
+```sql
 WITH max_order AS (
+  -- Step 1: Find the maximum order ID to identify the last order.
   SELECT MAX(order_id) AS max_id
   FROM orders
 )
-
-SELECT 
+-- Step 2: Apply swapping logic using a CASE statement and window functions.
+SELECT
   order_id AS corrected_order_id,
-  CASE 
-    WHEN order_id % 2 = 0 THEN 
+  CASE
+    WHEN order_id % 2 = 0 THEN
       LAG(item) OVER (ORDER BY order_id)
-    WHEN order_id % 2 = 1 AND order_id = (SELECT max_id FROM max_order) THEN 
+    WHEN order_id % 2 = 1 AND order_id = (SELECT max_id FROM max_order) THEN
       item
-    ELSE 
+    ELSE
       LEAD(item) OVER (ORDER BY order_id)
   END AS item
 FROM orders
 ORDER BY order_id;
 ```
+
+## 4. Code Breakdown
+
+### 4.1. CTE: `max_order`
+-   This Common Table Expression has one simple but crucial job: to find the single maximum `order_id` in the table.
+-   Storing this value in a CTE makes it easily accessible in the main query to check for the special "last odd order" condition.
+
+> [!NOTE]
+> Pre-calculating the `max_id` in a CTE is an efficient way to make this value available for the row-by-row logic in the `CASE` statement without needing a costly subquery for every row.
+
+### 4.2. Main Query and `CASE` Statement
+The `CASE` statement is the heart of the solution, evaluating each row and applying one of three rules in order.
+
+> [!CAUTION]
+> The order of conditions in a `CASE` statement matters. It evaluates them sequentially and stops at the first one that is true. The current order correctly handles the even numbers first, then the specific last odd number, and finally all other odd numbers.
+
+1.  **`WHEN order_id % 2 = 0 THEN LAG(item) ...`**:
+    -   This condition checks if the `order_id` is even.
+    -   If true, it uses `LAG(item)` to fetch the `item` from the *previous* row in the sequence, which corrects the swap.
+
+2.  **`WHEN order_id % 2 = 1 AND order_id = (SELECT max_id ...)`**:
+    -   This handles the special exception. It checks if the `order_id` is odd AND if it is equal to the maximum `order_id` in the entire table.
+    -   If both are true, it simply returns the original `item` for that row, preventing it from being swapped.
+
+> [!WARNING]
+> Without this specific condition, the query would try to use `LEAD()` on the last row, which would result in a `NULL` value for the item, incorrectly erasing the last order's item.
+
+3.  **`ELSE LEAD(item) ...`**:
+    -   This is the default case for any row that didn't meet the first two conditions, which means it must be an odd-numbered order that is *not* the last one.
+    -   It uses `LEAD(item)` to fetch the `item` from the *next* row, which corrects the swap for these orders.
+
+### 4.3. The Window Functions: `LAG()` and `LEAD()`
+-   `LAG(item) OVER (ORDER BY order_id)`: This function looks "backwards" one row in the ordered set and retrieves the value of the `item` column.
+-   `LEAD(item) OVER (ORDER BY order_id)`: This function looks "forwards" one row and retrieves the value of the `item` column.
+
+> [!IMPORTANT]
+> The `ORDER BY order_id` clause within the `OVER()` block is mandatory. It defines the sequence of rows that `LAG()` and `LEAD()` operate on. Without it, the database wouldn't know what "previous" and "next" mean.
