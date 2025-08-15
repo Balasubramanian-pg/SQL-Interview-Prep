@@ -1,32 +1,11 @@
----
-Created:
-Company:
-  -
-Difficulty:
-Status:
-Category:
-Sub category:
-Question Link:
----
-Of course! This is a great, straightforward query that highlights a common business calculation. It also provides a nice opportunity to discuss the mathematical components of an average.
+# Calculating Average Deal Size (Part 2)
 
-Here is the complete breakdown.
+## 1. Overview
+> [!NOTE]
+> This document analyzes a SQL query designed to answer the business question: **"What is the average deal size across all of our contracts, rounded to two decimal places?"** A "deal size" is defined as the `yearly_seat_cost` multiplied by the `num_seats`.
 
-***
-
-### 1. The Question
-
-The business question being asked by this SQL query is:
-
-**"What is the average deal size across all of our contracts, rounded to two decimal places?"**
-
-The query defines a "deal size" as the `yearly_seat_cost` multiplied by the `num_seats` for a single contract.
-
----
-
-### 2. Table Schema
-
-The query references a single table, `contracts`. A plausible schema for this table would be:
+## 2. Table Schema
+The query references a single table, `contracts`. A plausible schema for this table is as follows:
 
 ```sql
 -- Table: contracts
@@ -40,47 +19,38 @@ CREATE TABLE contracts (
     status            VARCHAR(20)             -- e.g., 'Active', 'Expired', 'Cancelled'
 );
 ```
+> [!TIP]
+> Using the `DECIMAL(10, 2)` data type is a best practice for storing currency values. It prevents the floating-point precision errors that can occur with types like `FLOAT` or `REAL`.
 
----
+## 3. Method 1: Using `AVG()`
+This method is the most direct and readable way to calculate an average.
 
-### 3. Structured SQL Query (Method 1: Using `AVG`)
-
-This is your original query, formatted for clarity. It is the most direct and readable way to ask for an average.
-
+### 3.1. SQL Query
 ```sql
 SELECT
     ROUND(AVG(yearly_seat_cost * num_seats), 2) AS average_deal_size
 FROM
     contracts;
 ```
+> [!NOTE]
+> Formatting SQL queries with indentation and newlines, as shown above, significantly improves readability and maintainability, especially for more complex queries.
 
----
+### 3.2. Explanation
+The query calculates a single aggregate value for the entire `contracts` table. The calculation happens from the inside out:
+*   **`FROM contracts`**: The query targets the `contracts` table as its data source.
+*   **`yearly_seat_cost * num_seats`**: For each row, the database performs this multiplication to compute the total value ("deal size") for that individual contract.
+*   **`AVG(...)`**: The `AVG()` aggregate function takes all individual deal size values and calculates their statistical average.
+> [!TIP]
+> SQL has a logical order of operations. The calculation within the `AVG()` function (`yearly_seat_cost * num_seats`) is performed for each row *before* the results are passed to the aggregation function.
+*   **`ROUND(..., 2)`**: The result of `AVG()` is passed to the `ROUND()` function, which rounds the number to two decimal places.
+*   **`AS average_deal_size`**: The final value is placed into a column named `average_deal_size`.
+> [!IMPORTANT]
+> Because there is no `GROUP BY` clause, the `AVG()` aggregate function collapses the entire result set into a single row, providing one summary value for the whole table.
 
-### 4. Explanation of the Query
+## 4. Method 2: Using `SUM()` and `COUNT()`
+An alternative way to calculate an average is to manually perform the underlying math: `Average = Total Sum / Total Count`.
 
-This query calculates a single aggregate value for the entire `contracts` table. The calculation happens from the inside out.
-
-1.  **`FROM contracts`**
-    *   The query targets the `contracts` table as its data source.
-
-2.  **`yearly_seat_cost * num_seats`**
-    *   For **each row** in the `contracts` table, the database first performs this multiplication. This computes the total value (the "deal size") for that individual contract.
-
-3.  **`AVG(...)`**
-    *   The `AVG()` aggregate function then takes all of these individual deal size values (one from each row) and calculates their statistical average.
-
-4.  **`ROUND(..., 2)`**
-    *   The result of the `AVG()` function is then passed to the `ROUND()` function, which rounds the number to two decimal places, making it suitable for displaying as a monetary value.
-
-5.  **`AS average_deal_size`**
-    *   Finally, the resulting single value is placed into a column named `average_deal_size`. Since there is no `GROUP BY` clause, the query returns just one row and one column.
-
----
-
-### 5. Another SQL Method (Method 2: Using `SUM` and `COUNT`)
-
-An alternative way to calculate an average is to manually perform the underlying math: `Average = Total Sum / Total Count`. This can sometimes provide more clarity on the components of the calculation.
-
+### 4.1. SQL Query
 ```sql
 SELECT
     ROUND(
@@ -91,24 +61,23 @@ FROM
     contracts;
 ```
 
----
+### 4.2. Explanation
+This query arrives at the exact same result by breaking the average calculation into its fundamental parts:
+*   **`SUM(yearly_seat_cost * num_seats)`**: This calculates the deal size for each row and then adds them all together, providing the total value of all contracts combined.
+*   **`COUNT(*)`**: This counts the total number of rows (i.e., total number of contracts) in the table.
+> [!WARNING]
+> If the `contracts` table is empty, `COUNT(*)` will return `0`. Attempting to divide by zero will cause an error in most SQL database systems. The `AVG()` function handles this more gracefully by returning `NULL`.
+*   **`SUM(...) / COUNT(*)`**: The total value of all contracts is divided by the total number of contracts. This is the mathematical definition of an average.
+> [!CAUTION]
+> Be mindful of integer division. In some SQL dialects (like older versions of SQL Server or PostgreSQL), if both the numerator and denominator were integers, the result would be an integer (e.g., `7 / 2 = 3`). Since our calculation involves a `DECIMAL` type, this is not an issue here, but it's a common pitfall to watch for.
+*   **`ROUND(..., 2) AS average_deal_size`**: As in the first method, the result is rounded and aliased.
 
-### 6. Explanation of the Alternative Query
+## 5. Method Comparison
+> [!IMPORTANT]
+> Both methods are functionally identical and will likely have the same performance in most database systems, as the query optimizer often translates `AVG(expression)` into `SUM(expression) / COUNT(expression)` internally.
 
-This query arrives at the exact same result by breaking the average calculation into its fundamental parts.
+> [!TIP]
+> For calculating a simple average, `AVG()` is almost always the preferred method. It is more concise, more readable, and clearly states the intent of the query.
 
-1.  **`SUM(yearly_seat_cost * num_seats)`**
-    *   This part first calculates the deal size for each row (`yearly_seat_cost * num_seats`) and then adds them all together using `SUM()`. This gives you the **total value of all contracts combined**.
-
-2.  **`COUNT(*)`**
-    *   This simply counts the **total number of rows** (i.e., total number of contracts) in the table.
-
-3.  **`SUM(...) / COUNT(*)`**
-    *   The query then divides the total value of all contracts by the total number of contracts. This division is the mathematical definition of an average.
-
-4.  **`ROUND(..., 2) AS average_deal_size`**
-    *   Just like in the first method, the result is rounded to two decimal places and given the alias `average_deal_size`.
-
-**Comparison:**
-*   **Method 1 (`AVG`)** is more declarative. You are telling the database "I want the average," and it handles the details. It is generally the preferred and more readable method.
-*   **Method 2 (`SUM`/`COUNT`)** is more explicit about the mathematical operation. Both methods are functionally identical and will likely have the same performance in most database systems.
+> [!NOTE]
+> While `AVG()` is simpler, the `SUM()`/`COUNT()` method can be useful if you need to display the total sum and the total count as separate columns in the same query, in addition to the calculated average.
