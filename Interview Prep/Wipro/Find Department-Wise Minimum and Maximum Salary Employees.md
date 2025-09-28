@@ -127,8 +127,6 @@ Both `FIRST_VALUE()` and `ROW_NUMBER()` are valid and common solutions for this 
 | **`FIRST_VALUE()`**       | Concise and efficient; expresses intent clearly.                 | Less intuitive than `ROW_NUMBER` if you are unfamiliar with it.       |  
 | **`ROW_NUMBER()`**        | Highly flexible and useful for various ranking problems.         | Requires two-step logic (ranking in a CTE, then filtering/aggregating). |  
 
----
-
 This solution demonstrates advanced SQL techniques, including window functions and conditional aggregation, making it a valuable addition to your SQL toolkit.  
 
 > [!TIP]  
