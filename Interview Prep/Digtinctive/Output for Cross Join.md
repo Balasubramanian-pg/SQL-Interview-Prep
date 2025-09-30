@@ -42,6 +42,29 @@ SELECT
     q.quantity
 FROM sales s, qty q;
 ```
+**3 rows (from sales) × 2 rows (from quantity) = 6 TOTAL ROWS**
+
+## Breakdown:
+
+- **Sales table**: 3 rows
+- **Quantity table**: 2 rows  
+- **CROSS JOIN result**: 3 × 2 = **6 rows**
+
+## Visual Matrix:
+
+```
+Sales Rows:    Quantity Rows:    Result:
+[Row 1]   ×   [Row A]    =   Combination 1A
+[Row 1]   ×   [Row B]    =   Combination 1B
+[Row 2]   ×   [Row A]    =   Combination 2A
+[Row 2]   ×   [Row B]    =   Combination 2B
+[Row 3]   ×   [Row A]    =   Combination 3A
+[Row 3]   ×   [Row B]    =   Combination 3B
+```
+
+**TOTAL: 6 ROWS**
+
+So the CROSS JOIN will output exactly **6 rows** - every possible combination of your 3 sales records with your 2 quantity records.
 
 ## Practical Use Case Example:
 
