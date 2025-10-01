@@ -1,2 +1,0 @@
-2. **How does `NULL` behave in comparisons?**
-   (e.g., `NULL = NULL` vs `IS NULL`.)
