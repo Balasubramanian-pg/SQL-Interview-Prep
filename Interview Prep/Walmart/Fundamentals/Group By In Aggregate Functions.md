@@ -1,1 +1,0 @@
-8. **What happens when you use an aggregate function without a `GROUP BY` clause?**
