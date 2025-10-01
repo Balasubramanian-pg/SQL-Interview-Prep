@@ -6,8 +6,6 @@ This document explains how to solve a common "top-N-per-group" SQL interview que
 > [!NOTE]  
 > Understanding both approaches is valuable, as they demonstrate different SQL techniques and are applicable in various database environments.  
 
----
-
 ## 2. **Problem Statement**  
 
 ### 2.1 **The Scenario**  
@@ -45,8 +43,6 @@ Write a SQL query to find the second highest salary for each department, along w
 > [!IMPORTANT]  
 > The solution must handle ties (e.g., two employees with the same highest salary) correctly.  
 
----
-
 ## 3. **Setup Script**  
 You can use the following T-SQL script to create the tables and populate them with sample data.  
 
@@ -83,9 +79,6 @@ INSERT INTO employee (employee_id, salary, department_id) VALUES
 (8, 70000, 103);
 GO
 ```  
-
----
-
 ## 4. **Solutions and Explanations**  
 
 ### 4.1 **Solution 1: Using the `DENSE_RANK()` Window Function**  
@@ -123,8 +116,6 @@ This is the most modern, readable, and scalable approach for solving Nth-highest
   WHERE
       salary_rank = 2;
   ```  
-
----
 
 ### 4.2 **Solution 2: Using a Correlated Subquery**  
 This is a more traditional method that does not rely on window functions. It is more complex and generally less performant on large datasets.  
@@ -166,8 +157,6 @@ This is a more traditional method that does not rely on window functions. It is 
 > [!WARNING]  
 > Correlated subqueries can be slow on large datasets due to repeated executions of the inner query.  
 
----
-
 ## 5. **Summary of Approaches**  
 
 | **Method**                | **Pros**                                                         | **Cons**                                                              |  
@@ -177,8 +166,6 @@ This is a more traditional method that does not rely on window functions. It is 
 
 > [!TIP]  
 > Prefer the `DENSE_RANK()` approach for modern databases and readability. Use correlated subqueries only when window functions are not available.  
-
----
 
 This document covers both modern and traditional approaches to finding the second highest salary per department, providing a comprehensive understanding of the problem and its solutions.  
 
