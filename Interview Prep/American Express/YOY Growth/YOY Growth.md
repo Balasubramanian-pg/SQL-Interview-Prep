@@ -6,16 +6,12 @@ This document explains how to calculate the total revenue for each year and its 
 > [!NOTE]  
 > The solution assumes the input table `Transactions` has columns: `customer_id`, `transaction_date`, and `amount`.  
 
----
-
 ## 2. **Desired Output**  
 The output table `Results` includes the following columns:  
 - `year`: The transaction year.  
 - `current_year_revenue`: Total revenue for the current year.  
 - `previous_year_revenue`: Total revenue for the previous year.  
 - `yoy_growth_percentage`: Year-on-year growth percentage, rounded to two decimal places.  
-
----
 
 ## 3. **Logical Components**  
 ### 3.1 **Extract Year from Date**  
@@ -35,8 +31,6 @@ Use the formula:
 \[
 \text{YoY Growth} = \left( \frac{\text{current\_year\_revenue} - \text{previous\_year\_revenue}}{\text{previous\_year\_revenue}} \right) \times 100
 \]
-
----
 
 ## 4. **SQL Solution**  
 ```sql
@@ -73,8 +67,6 @@ ORDER BY
 
 > [!WARNING]  
 > Ensure the `transaction_date` column is of a date or datetime data type for the `EXTRACT` function to work correctly.  
-
----
 
 ## 5. **How It Works**  
 ### 5.1 **CTE `yearly_revenue`**  
