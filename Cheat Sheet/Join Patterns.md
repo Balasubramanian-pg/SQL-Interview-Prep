@@ -14,8 +14,6 @@
 | **Multiple join conditions** (e.g., match on date range, not just ID) | Complex join logic | `JOIN ON t1.id = t2.id AND t1.date BETWEEN t2.start AND t2.end` | Multiple conditions in ON clause |
 | **Find customers with purchases in ALL categories** | Relational division problem | `INNER JOIN` + `GROUP BY` + `HAVING COUNT(DISTINCT category) = (SELECT COUNT(*) FROM categories)` | Ensures complete set membership |
 
----
-
 ## Quick Decision Tree
 
 ```
@@ -32,8 +30,6 @@ Need every combination?
 Comparing table to itself?
 └─ YES → SELF JOIN (use aliases!)
 ```
-
----
 
 ## Critical Traps & Tricks
 
@@ -54,8 +50,6 @@ LEFT JOIN orders o ON c.id = o.customer_id
 
 **Interview Trick:** If they ask "find customers WITHOUT orders after 2024" and you write the first query, you fail!
 
----
-
 ### **Trap 2: JOIN vs WHERE for filtering**
 ```sql
 -- Both produce same result, but semantic difference:
@@ -73,8 +67,6 @@ INNER JOIN departments d ON e.dept_id = d.id AND d.name = 'Sales'
 - Put **filters** in `WHERE`
 - Exception: LEFT JOIN filters on right table must go in `ON`
 
----
-
 ### **Trap 3: Multiple LEFT JOINs can multiply rows**
 ```sql
 -- If one customer has 3 orders and 2 addresses:
@@ -86,8 +78,6 @@ LEFT JOIN addresses a ON c.id = a.customer_id
 ```
 
 **Solution:** Use subqueries or aggregate before joining
-
----
 
 ### **Trick: The "NOT EXISTS" Alternative**
 ```sql
@@ -111,8 +101,6 @@ WHERE NOT EXISTS (
 
 **Interview Gold:** Mention that `NOT EXISTS` often performs better than `LEFT JOIN` for large datasets!
 
----
-
 ## Self-Join Pattern Recognition
 
 | Problem Type | Self-Join Pattern |
@@ -122,8 +110,6 @@ WHERE NOT EXISTS (
 | Find duplicates | `JOIN table t1 ON table t2 ON t1.email = t2.email AND t1.id < t2.id` |
 | Compare same entity at different times | `JOIN table current ON table previous ON current.id = previous.id AND current.date > previous.date` |
 
----
-
 ## When They Ask "Why Not Use...?"
 
 | Question | Answer |
@@ -132,8 +118,6 @@ WHERE NOT EXISTS (
 | **"Why not use RIGHT JOIN?"** | You can, but LEFT is convention (left table = "main" table). RIGHT JOIN is just LEFT flipped. |
 | **"CROSS JOIN vs comma syntax?"** | `FROM t1, t2` is implicit CROSS JOIN (old style). Explicit `CROSS JOIN` is clearer. |
 | **"When would you actually use FULL OUTER JOIN?"** | Rare! Maybe comparing two data sources to find discrepancies on both sides. |
-
----
 
 ## Performance Quick Hits
 
@@ -148,8 +132,6 @@ WHERE NOT EXISTS (
 - Put WHERE filters on right table of LEFT JOIN
 - Assume NOT IN handles NULLs correctly (it doesn't!)
 - Chain multiple LEFT JOINs without understanding row multiplication
-
----
 
 ## Interview Power Move
 
