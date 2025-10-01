@@ -1,0 +1,127 @@
+This cheat sheet covers the **`EXCEPT`** (or **`MINUS`** in Oracle) operator in SQL. It's used to compare two result sets and return only the distinct rows from the **first** result set that are **not** present in the second result set.
+
+## EXCEPT/MINUS Cheat Sheet Table
+
+| Feature | Description | How It Works | Key Use Case |
+| :--- | :--- | :--- | :--- |
+| **Primary Function** | Returns the **difference** between two result sets (mathematical set difference). | Rows in the first query are checked against rows in the second; if a row exists in the second, it is excluded from the final result. | Finding entities in Group A that **do not** exist in Group B (the **Anti-Join** pattern). |
+| **Syntax Variation** | **`EXCEPT`** is used by ANSI SQL, SQL Server, PostgreSQL, MySQL. | **`MINUS`** is the equivalent operator used by Oracle. | The functionality is identical regardless of the keyword used. |
+| **Duplicates** | **Removes** duplicate rows from the final result set. | The process inherently involves checking for unique rows. | The result set always contains distinct rows. |
+| **Requirement** | Both queries **must** have the same number of columns, and the corresponding columns **must** have compatible data types. | Required to ensure a valid row-by-row comparison can be made. | Enforce consistency in your `SELECT` lists. |
+
+-----
+
+## EXCEPT/MINUS Mini Playbook (Realistic Queries)
+
+These snippets illustrate the primary use cases for the `EXCEPT`/`MINUS` operator.
+
+### 1\. Simple Set Difference (Finding Missing Customers)
+
+**Use Case:** Find the distinct IDs of **active users** who have **not yet placed an order**.
+
+```sql
+SELECT
+    user_id
+FROM
+    Active_Users -- Set A: The full list of users we care about
+
+EXCEPT
+
+SELECT
+    user_id
+FROM
+    Orders;      -- Set B: The list of users who have placed an order
+    
+-- RESULT: The set of user_ids present in Active_Users but NOT in Orders.
+```
+
+-----
+
+### 2\. Multi-Column Difference (Finding Non-Migrated Data)
+
+**Use Case:** Identify the exact records (defined by `customer_id` and `address`) that exist in the old system but have **not** been successfully migrated to the new system.
+
+```sql
+SELECT
+    customer_id,
+    address,
+    zip_code
+FROM
+    Old_CRM_Data -- Set A: Source of truth (or reference)
+
+MINUS -- Use EXCEPT in SQL Server/PostgreSQL
+
+SELECT
+    customer_id,
+    address,
+    zip_code
+FROM
+    New_CRM_Data; -- Set B: The data that should be excluded
+    
+-- RESULT: Rows where the entire combination of (ID, address, zip) is in Old_CRM_Data but missing from New_CRM_Data.
+```
+
+-----
+
+### 3\. Comparing to LEFT JOIN (The Anti-Join Alternative)
+
+The most common alternative to `EXCEPT`/`MINUS` is the **Anti-Join pattern** using `LEFT JOIN` and `WHERE IS NULL`. While both achieve the same result, the `EXCEPT` syntax is often cleaner and more readable for simple set subtraction.
+
+**Goal:** Find product IDs in `Inventory` that are NOT in `Sales`.
+
+```sql
+-- EXCEPT Approach (Cleaner for simple set subtraction)
+SELECT product_id FROM Inventory
+EXCEPT
+SELECT product_id FROM Sales;
+```
+
+```sql
+-- LEFT JOIN Anti-Join Approach (Often more efficient for large tables)
+SELECT
+    i.product_id
+FROM
+    Inventory AS i
+LEFT JOIN
+    Sales AS s ON i.product_id = s.product_id
+WHERE
+    s.product_id IS NULL; -- Only keep rows where no match was found
+```
+
+-----
+
+### 4\. Using GROUP BY with EXCEPT
+
+The `EXCEPT` operator works only on the final results of the individual `SELECT` statements, allowing you to use aggregation and filtering within the statement blocks.
+
+**Use Case:** Find departments that **met their sales goal in Q1** but **failed to meet it in Q2**.
+
+```sql
+-- Departments that met the $5000 Q1 goal
+SELECT
+    department_id
+FROM
+    Quarterly_Sales
+WHERE
+    quarter = 1
+GROUP BY
+    department_id
+HAVING
+    SUM(revenue) >= 5000
+
+EXCEPT
+
+-- Departments that met the $5000 Q2 goal (we exclude them from the final result)
+SELECT
+    department_id
+FROM
+    Quarterly_Sales
+WHERE
+    quarter = 2
+GROUP BY
+    department_id
+HAVING
+    SUM(revenue) >= 5000;
+    
+-- RESULT: Only departments that hit Q1 goal AND did NOT hit Q2 goal.
+```
