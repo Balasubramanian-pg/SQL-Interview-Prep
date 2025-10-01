@@ -12,8 +12,6 @@ Determine how many records each type of join will produce when joining on the `I
 4. FULL JOIN  
 5. CROSS JOIN  
 
----
-
 ## 2. **Easiest Solution**  
 
 ### 2.1 **INNER JOIN (14 records)**  
@@ -50,9 +48,6 @@ SELECT COUNT(*)
 FROM Table1
 CROSS JOIN Table2;
 ```  
-
----
-
 ## 3. **Code Explanation**  
 
 ### 3.1 **INNER JOIN**  
@@ -94,8 +89,6 @@ CROSS JOIN Table2;
 
 > [!WARNING]  
 > CROSS JOIN can produce very large result sets, especially with big tables. Use with caution.  
-
----
 
 **Note**: NULL values don't match with each other in joins (`NULL ≠ NULL` in SQL).  
 
