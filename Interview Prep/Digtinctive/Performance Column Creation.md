@@ -1,9 +1,10 @@
 # SQL Problem: Create Performance Category Column
 
 **Question:**
+>[!Tip]
 > How do I create a column called *performance* in my sales table that shows "High" if `sales_amount > 20` and "Low" otherwise?
 
----
+
 
 ## Solution Using CASE Expression
 
