@@ -1,7 +1,4 @@
-Here’s a proper **cheat sheet** you can keep in your head. 
-  This covers almost every permutation of interview traps around `ROW_NUMBER()`, `RANK()`, and `DENSE_RANK()`
-
-### Cheat Sheet: Ranking Functions in Interviews
+## Cheat Sheet: Ranking Functions in Interviews
 
 | Interview Question Pattern                                                                   | What They’re Really Testing                             | Best Function to Use                                        | Why                                            |
 | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------- |
