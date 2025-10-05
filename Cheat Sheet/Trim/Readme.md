@@ -7,8 +7,6 @@
 | **`RTRIM`** | Removes characters only from the **end (Right)** of a string. | `$RTRIM(string [, characters])$` | Useful for removing trailing spaces, line breaks, or suffixes. |
 | **Simple Space Removal** | The most common use: removing leading/trailing **whitespace**. | `$TRIM(string)$` | Most databases use this simple syntax for removing only spaces. |
 
------
-
 ## TRIM, LTRIM, RTRIM Mini Playbook (Realistic Queries)
 
 These snippets illustrate the common use cases for trimming functions, emphasizing general syntax and platform variations.
@@ -29,8 +27,6 @@ WHERE
 -- Example: TRIM('   12345   ') => '12345'
 ```
 
------
-
 ### 2\. LTRIM (Removing Specific Leading Characters)
 
 **Use Case:** Remove the leading currency symbol (`$`) from a price column that was imported as a string.
@@ -47,8 +43,6 @@ FROM
 -- Example: LTRIM('$$125.00', '$') => '125.00'
 ```
 
------
-
 ### 3\. RTRIM (Removing Specific Trailing Characters)
 
 **Use Case:** Remove unwanted trailing commas (`,`) from a messy notes field.
@@ -62,8 +56,6 @@ FROM
     
 -- Example: RTRIM('Warning, Error,,', ',') => 'Warning, Error'
 ```
-
------
 
 ### 4\. Advanced TRIM (ANSI Standard)
 
