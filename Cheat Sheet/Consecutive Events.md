@@ -2,7 +2,7 @@ Finding **consecutive events** in SQL involves identifying sequences of records 
 
 The most robust, standard, and high-performance method for this is the **Gaps and Islands** technique, which relies on **Window Functions** to group the consecutive runs of identical values.
 
-## Gaps and Islands Technique for Consecutive Events 🏝️
+## Gaps and Islands Technique for Consecutive Events 
 
 This technique works by creating a unique identifier for each run (or "island") of consecutive, identical values.
 
