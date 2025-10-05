@@ -10,8 +10,6 @@ This cheat sheet compares **Correlated Subqueries** and **Non-correlated Subquer
 | **Syntax Clue** | References only columns from the inner query. | References columns from the outer query (using an alias) within the inner query. |
 | **Performance** | Generally **faster** as it executes only once. | Generally **slower** as it re-executes for every row processed by the outer query. |
 
------
-
 ## Correlated vs. Non-correlated Subqueries Mini Playbook (Realistic Queries)
 
 These snippets illustrate the distinct syntax and usage of both subquery types.
@@ -36,8 +34,6 @@ WHERE
     );
 ```
 
------
-
 ### 2\. Correlated Subquery (Dependent on Outer Query)
 
 **Use Case:** Find the **most recent order** for *each* customer. The inner query needs the `customer_id` from the specific row being processed by the outer query.
@@ -60,8 +56,6 @@ WHERE
             o2.customer_id = o1.customer_id -- The correlation link
     );
 ```
-
------
 
 ### 3\. Correlated Subquery with `EXISTS`
 
