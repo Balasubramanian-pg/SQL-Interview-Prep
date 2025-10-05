@@ -2,8 +2,6 @@ Finding **consecutive events** in SQL involves identifying sequences of records 
 
 The most robust, standard, and high-performance method for this is the **Gaps and Islands** technique, which relies on **Window Functions** to group the consecutive runs of identical values.
 
------
-
 ## Gaps and Islands Technique for Consecutive Events 🏝️
 
 This technique works by creating a unique identifier for each run (or "island") of consecutive, identical values.
@@ -68,9 +66,6 @@ HAVING
 ORDER BY
     run_start;
 ```
-
------
-
 ## Alternative: Finding Consecutive Sequential IDs
 
 When the problem involves finding consecutive **sequential numbers** (like $ID, ID+1, ID+2, \dots$), you can use a simpler approach by comparing the sequence ID to its corresponding row number.
