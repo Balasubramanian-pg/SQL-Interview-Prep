@@ -7,8 +7,6 @@
 | **Extracting Time Parts** | Retrieving the hour, minute, second, or millisecond from a timestamp. | Use the platform-specific extraction function (e.g., `EXTRACT`, `DATEPART`). | `EXTRACT(HOUR FROM timestamp_col)`, `DATEPART(hour, timestamp_col)` |
 | **Time Difference** | Calculate the precise difference between two timestamps in a specific unit (e.g., seconds, milliseconds). | Use `DATEDIFF` or subtraction with type casting for precise measurement. | `DATEDIFF(millisecond, T1, T2)` / `(T2 - T1)` |
 
------
-
 ## Working with Timestamps Mini Playbook (Realistic Queries)
 
 These snippets illustrate common timestamp operations, highlighting the database-specific nature of many time functions.
@@ -30,8 +28,6 @@ VALUES
 -- PostgreSQL/MySQL syntax shown.
 ```
 
------
-
 ### 2\. Time Zone Conversion
 
 **Use Case:** Convert transaction timestamps stored in UTC to the local EST time zone for reporting.
@@ -51,8 +47,6 @@ FROM
     Transactions;
 -- PostgreSQL syntax shown.
 ```
-
------
 
 ### 3\. Extracting Time Parts
 
@@ -75,8 +69,6 @@ ORDER BY
     2 DESC;
 -- PostgreSQL syntax shown.
 ```
-
------
 
 ### 4\. Time Difference (Latency Calculation)
 
