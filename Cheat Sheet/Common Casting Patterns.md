@@ -14,8 +14,6 @@ This is used to control the precision of numerical values, often for rounding or
 | `CAST(num AS DECIMAL(p, s))` | Controlling precision for currency or statistical calculations (e.g., standardizing `DECIMAL` to 2 significant places). | `CAST(5.1234 AS DECIMAL(10, 2)) = 5.12` |
 | `CAST(num AS BIGINT)` | Ensuring a large calculation doesn't overflow standard integer limits. | `CAST(total_count AS BIGINT)` |
 
------
-
 ### 2\. String $\iff$ Date/Time (Parsing/Extraction)
 
 This is essential for parsing dates that are stored as text and for extracting parts of a date into a string format.
@@ -38,8 +36,6 @@ WHERE
     sale_date >= CAST('2025-09-01' AS DATE); -- Ensures the filter is treated as a DATE object
 ```
 
------
-
 ### 3\. String $\iff$ String (Length Control)
 
 Used primarily to limit the length of a string, often to comply with schema constraints or reduce network payload.
@@ -57,8 +53,6 @@ SELECT
 FROM
     Products; -- Ensures the output column length is limited to 50 characters
 ```
-
------
 
 ### 4\. Special Use Cases (Boolean/JSON)
 
