@@ -8,8 +8,6 @@
 | **Self-Reference** | **Possible** (Allows for **Recursive CTEs**). | **Not possible**. Cannot reference itself. |
 | **Scope** | Limited to the single immediate `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement that follows the `WITH` clause. | Limited to the specific clause (`FROM`, `SELECT`, or `WHERE`) it is defined in. |
 
------
-
 ## CTEs vs. Subqueries Mini Playbook (Realistic Queries)
 
 These snippets illustrate the common use cases and structural differences between the two methods for calculating the **average order value** for *high-value users* (those with lifetime spending over $1000).
@@ -47,8 +45,6 @@ FROM
     UserOrders;
 ```
 
------
-
 ### 2\. Using Subqueries (Derived Tables)
 
 **Use Case:** Achieve the same result by nesting subqueries in the `FROM` clause.
@@ -79,8 +75,6 @@ FROM
     
 -- Note: Subquery nesting can become complex quickly, hindering readability.
 ```
-
------
 
 ### 3\. Key Difference: Recursive CTE
 
