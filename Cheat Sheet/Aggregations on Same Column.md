@@ -8,8 +8,6 @@
 | **Proportional Aggregation** | Calculating the percentage of a part relative to the whole, grouped by a field. | Use a **Window Function** (e.g., `SUM() OVER ()`) to get the total and divide the group total by it. | `$SUM(group\_col) / SUM(SUM(group\_col)) OVER ()$` |
 | **Filter-First Aggregation** | Aggregating a column only after filtering the initial rows (before grouping). | Use the **`WHERE`** clause to filter rows, then aggregate the result. | `$SELECT SUM(col) FROM Table WHERE condition GROUP BY group\_col$` |
 
------
-
 ## Multiple Aggregations on Same Column Mini Playbook (Realistic Queries)
 
 These snippets illustrate ways to extract various statistics from the `amount` column in a single pass.
@@ -31,8 +29,6 @@ GROUP BY
     region_id;
 ```
 
------
-
 ### 2\. Conditional Aggregation (SUM and COUNT with CASE)
 
 **Use Case:** For each user, calculate the **total successful transactions** and the **total failed transactions** using the same `transaction_amount` column.
@@ -50,8 +46,6 @@ GROUP BY
     user_id;
 ```
 
------
-
 ### 3\. Proportional Aggregation (Percent of Total)
 
 **Use Case:** Calculate each product's sales **amount** and its percentage contribution to the **grand total sales amount**.
@@ -67,8 +61,6 @@ FROM
 GROUP BY
     product_id;
 ```
-
------
 
 ### 4\. Filter-First Aggregation (WHERE vs. HAVING)
 
