@@ -20,3 +20,12 @@
 | **Same value in ALL related records** | NOT EXISTS with negation | `WHERE NOT EXISTS (SELECT 1 WHERE condition != expected)` | Check universal condition |
 | **Cumulative distinct count** | COUNT(DISTINCT) with window | Complex—usually requires self-join or specialized function | Running unique count |
 
+
+## Interview Power Moves
+
+When you encounter these patterns, mention:
+
+1. **"This is a classic N-per-group problem—I'll use ROW_NUMBER with PARTITION BY"** (shows pattern recognition)
+
+2. **"For consecutive sequences, the date minus ROW_NUMBER trick creates constant group identifiers"** (shows you know advanced techniques)
+
