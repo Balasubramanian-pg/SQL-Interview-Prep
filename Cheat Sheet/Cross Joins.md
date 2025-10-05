@@ -9,7 +9,7 @@ This cheat sheet covers the **`CROSS JOIN`** operation in SQL, which produces th
 | **Scenario Testing/Permutations** | Combining all values of several parameters to simulate different possibilities. | Cross join parameter tables to generate a large test set. | `SELECT p1.val, p2.val FROM Params1 p1 CROSS JOIN Params2 p2` |
 | **Pivot Table Data Structure** | Creating a fixed set of columns (e.g., all months) to ensure they appear in the result, even if data is missing for some. | Cross join the data with a table containing all desired column headers. | `FROM Data d CROSS JOIN ColumnHeaders h` |
 
------
+
 
 ## CROSS JOIN Mini Playbook (Realistic Queries)
 
@@ -29,8 +29,6 @@ FROM
 CROSS JOIN
     main_courses AS m;
 ```
-
------
 
 ### 2\. Time Series/Date Padding
 
@@ -52,8 +50,6 @@ LEFT JOIN
     ON p.product_id = s.product_id AND c.sale_date = s.sale_date;
 ```
 
------
-
 ### 3\. Scenario Testing (Permutations)
 
 **Use Case:** Generate all possible test cases by combining different browser types and operating systems.
@@ -69,8 +65,6 @@ CROSS JOIN
 WHERE
     b.supported = TRUE AND o.is_active = TRUE; -- Can still apply filters
 ```
-
------
 
 ### 4\. Implicit CROSS JOIN Syntax (Old Style)
 
