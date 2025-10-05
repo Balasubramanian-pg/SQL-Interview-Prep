@@ -8,8 +8,6 @@
 | **Order in Query** | Comes after `FROM` and `JOIN` clauses. | Comes after the `GROUP BY` clause. |
 | **Primary Use** | Filtering out specific rows that do not meet initial criteria (e.g., `price > 100`). | Filtering out entire groups based on a summary condition (e.g., `AVG(price) > 500`). |
 
------
-
 ## HAVING vs. WHERE Mini Playbook (Realistic Queries)
 
 These snippets illustrate the distinct use cases for `WHERE` and `HAVING` in a scenario involving filtering orders by date and then filtering the resulting customer groups by total spend.
@@ -31,8 +29,6 @@ GROUP BY
     customer_id;
 ```
 
------
-
 ### 2\. Using HAVING (Filtering Aggregated Groups)
 
 **Use Case:** Calculate the total sales for *every* customer, and then only show the customers whose **total sales exceeded $500**.
@@ -49,8 +45,6 @@ HAVING
     -- Filters the results of the grouping based on the aggregated value
     SUM(amount) > 500;
 ```
-
------
 
 ### 3\. Using BOTH WHERE and HAVING (Combined Filtering)
 
@@ -71,8 +65,6 @@ HAVING
     -- Stage 2: Filter the resulting groups based on the aggregated sum
     SUM(amount) > 1000;
 ```
-
------
 
 ### 4\. WHERE vs. HAVING on Non-Aggregated Columns
 
