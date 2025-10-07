@@ -6,8 +6,6 @@
 | **`FROM`** | **Table** (Non-correlated) | **Table/Relation** (multiple rows/columns) | Used to create a temporary, derived table that the outer query can then join to, filter, or select from. Often called a **Derived Table**. |
 | **`WHERE`** | **List/Scalar/Existence** | **List** (1 column) or **Single value** | Used for filtering rows: checks if a value exists in a list (`IN`), compares to a single value (Scalar), or checks for row existence (`EXISTS`). |
 
------
-
 ## Subquery in SELECT vs FROM vs WHERE Mini Playbook (Realistic Queries)
 
 These snippets illustrate the distinct functionality of subqueries based on their placement.
@@ -33,8 +31,6 @@ FROM
     Customers AS c;
 ```
 
------
-
 ### 2\. Subquery in FROM (Derived Table)
 
 **Use Case:** Find the average number of orders per day. First, calculate the daily order count (the derived table), then average those counts.
@@ -54,8 +50,6 @@ FROM
             order_date
     ) AS DailyCounts; -- Must assign an alias to the derived table
 ```
-
------
 
 ### 3\. Subquery in WHERE (Filtering)
 
