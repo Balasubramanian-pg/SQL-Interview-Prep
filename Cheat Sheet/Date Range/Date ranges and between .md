@@ -7,8 +7,6 @@
 | **Range Overlap Check** | Identify if two date ranges intersect with each other. | Use a compound condition that checks if neither range starts entirely after the other ends. | `$R1.Start < R2.End AND R2.Start < R1.End$` |
 | **Missing/Gaps Check** | Finding periods where data is absent or an expected sequence of dates is broken. | Use **`LAG`** (or **`LEAD`**) to compare the current date to the previous date. | `$IF (current\_date = LAG(current\_date) + 1, 'No Gap', 'Gap')$` |
 
------
-
 ## Date Ranges and BETWEEN Mini Playbook (Realistic Queries)
 
 These snippets illustrate the proper methods for filtering data using date ranges, emphasizing the distinction between `BETWEEN` and the safer `> / <` approach for timestamps.
@@ -29,8 +27,6 @@ WHERE
     order_date BETWEEN '2025-01-01' AND '2025-01-31';
 ```
 
------
-
 ### 2\. Inclusive/Exclusive (Best Practice for Timestamps)
 
 **Use Case:** Retrieve all log entries that occurred during the calendar month of January 2025, robustly handling the `log_timestamp` field.
@@ -50,8 +46,6 @@ WHERE
     AND log_timestamp < '2025-02-01';
 ```
 
------
-
 ### 3\. Range Overlap Check
 
 **Use Case:** Find all active subscription plans that overlap with a specific holiday blackout period, defined by `blackout_start` and `blackout_end`.
@@ -69,8 +63,6 @@ WHERE
     -- AND the blackout must start before the plan ends
     AND '2025-12-18' < plan_end_date; -- (Blackout Start)
 ```
-
------
 
 ### 4\. Missing/Gaps Check
 
