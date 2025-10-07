@@ -2,9 +2,7 @@ Finding duplicate records in SQL is a common data quality task, typically accomp
 
 The most effective and common method involves using **Window Functions** or the **`GROUP BY`** clause with the **`HAVING`** clause.
 
------
-
-## 1\. Identifying and Viewing Duplicates (GROUP BY + HAVING) 🧐
+## 1\. Identifying and Viewing Duplicates (GROUP BY + HAVING) 
 
 This method is the most straightforward way to find the values that have duplicates and count how many times they appear.
 
@@ -29,8 +27,6 @@ GROUP BY
 HAVING
     COUNT(*) > 1; -- Filter for groups with more than one record
 ```
-
------
 
 ## 2\. Viewing the Full Duplicate Rows (Window Function) 💡
 
@@ -68,9 +64,7 @@ WHERE
     rn > 1; -- Keeps all rows that are not the first occurrence
 ```
 
------
-
-## 3\. Deleting Duplicates (Window Function) 🗑️
+## 3\. Deleting Duplicates (Window Function) 
 
 The `ROW_NUMBER()` method is also the safest way to delete duplicates, as it allows you to explicitly define which copy is the "original" to keep (rank 1) and which copies to delete (rank \> 1).
 
