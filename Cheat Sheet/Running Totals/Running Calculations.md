@@ -1,8 +1,6 @@
 SQL offers several powerful methods for running calculations across rows, often required for financial, statistical, or cumulative reporting. The primary techniques involve using **Window Functions** for cumulative and moving calculations, or simple **Aggregations** with **`GROUP BY`** for static totals.
 
------
-
-## 1\. Window Functions (Calculations Across Related Rows) 🌊
+## 1\. Window Functions (Calculations Across Related Rows) 
 
 Window functions perform calculations across a set of table rows that are somehow related to the current row. They **do not collapse rows** like standard aggregation (e.g., `SUM` in a `GROUP BY`).
 
@@ -58,9 +56,7 @@ FROM
     Metrics;
 ```
 
------
-
-## 2\. Aggregation Functions (Calculations Per Group) 📊
+## 2\. Aggregation Functions (Calculations Per Group) 
 
 Standard aggregate functions (`SUM`, `AVG`, `COUNT`, `MIN`, `MAX`) collapse the rows within a group to produce a single value for that group, requiring a `GROUP BY` clause.
 
@@ -82,8 +78,6 @@ GROUP BY
 HAVING
     COUNT(*) > 10; -- Filter groups (departments) that meet a criterion
 ```
-
------
 
 ## 3\. Subqueries and Joins (Calculations Relative to a Total)
 
