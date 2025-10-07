@@ -2,8 +2,6 @@ The **`PIVOT`** operator in SQL Server is a dedicated, proprietary extension use
 
 The `PIVOT` operator simplifies the syntax for aggregating data from a **single categorical column** into multiple summary columns.
 
------
-
 ## SQL Server PIVOT Syntax Cheat Sheet
 
 The `PIVOT` operation works by defining three key elements:
@@ -33,8 +31,6 @@ PIVOT
     IN ([Value_1], [Value_2], [Value_3], ...) -- Must explicitly list the values to become columns
 ) AS PivotTableAlias;
 ```
-
------
 
 ## PIVOT Mini Playbook (Realistic Query)
 
@@ -77,8 +73,6 @@ ORDER BY
 | :--- | :--- | :--- | :--- |
 | East | 500.00 | 8000.00 | 120.00 |
 | West | 0.00 | 9500.00 | 0.00 |
-
------
 
 ## Key PIVOT Limitations
 
