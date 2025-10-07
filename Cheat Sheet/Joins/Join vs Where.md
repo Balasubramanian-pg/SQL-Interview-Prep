@@ -9,8 +9,6 @@ This cheat sheet compares two fundamental methods for restricting data in SQL: *
 | **Impact on `LEFT JOIN`** | **DRAMATICALLY different** (turns the `LEFT JOIN` into an `INNER JOIN`). | **Retains all rows** from the left table; filters the right table only. |
 | **When to Use** | For general filtering on columns from *either* table, or for filtering the final result after a complex join. | To specify the exact linkage conditions, especially in a **`LEFT JOIN`** to preserve unmatched rows. |
 
------
-
 ## JOIN vs. WHERE Clause Filtering Mini Playbook (Realistic Queries)
 
 These snippets illustrate the critical difference using a `LEFT JOIN` on two tables: `Users` (left) and `Orders` (right). We want all users, but only their orders with a `status = 'SHIPPED'`.
@@ -37,8 +35,6 @@ LEFT JOIN
 --         Users who placed 'PENDING' orders will appear with NULL order data.
 ```
 
------
-
 ### Scenario 2: Filtering in the `WHERE` Clause (Turns into INNER JOIN)
 
 **Goal:** List all users and their SHIPPED orders, but the `WHERE` clause fundamentally changes the logic.
@@ -63,8 +59,6 @@ WHERE
 -- RESULT: Identical to an INNER JOIN. Only users who have a 'SHIPPED' order are returned.
 --         Users with no orders or only 'PENDING' orders are completely removed.
 ```
-
------
 
 ### 3\. INNER JOIN Equivalence
 
