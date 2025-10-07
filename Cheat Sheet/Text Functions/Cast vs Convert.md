@@ -9,8 +9,6 @@ Both **`CAST`** and **`CONVERT`** are SQL functions used to change one data type
 | **Flexibility** | Less flexible. **Cannot** specify custom output formatting (e.g., date styles). | Highly flexible. The optional `style` argument allows for specific date/time or currency formatting, particularly in SQL Server. |
 | **Portability** | **Recommended** for maximum portability between different SQL platforms. | **Avoid** if cross-platform compatibility is a requirement. |
 
------
-
 ## CAST vs. CONVERT Mini Playbook (Realistic Queries)
 
 ### 1\. Simple Data Type Conversion (Portability)
@@ -26,8 +24,6 @@ SELECT
 FROM
     Products;
 ```
-
------
 
 ### 2\. Time/Date Conversion (SQL Server Style)
 
@@ -55,8 +51,6 @@ SELECT
 FROM
     Orders;
 ```
-
------
 
 ### 3\. Converting Nullable Values
 
