@@ -7,8 +7,6 @@
 | **Conditional Status Match** | Joining based on a primary key *and* ensuring a specific status or flag is met simultaneously. | Use `AND` to combine the primary key match with a boolean or value check. | `ON T1.UserID = T2.UserID AND T2.IsActive = TRUE` |
 | **Excluding Self-Joins** | Combining a self-join with an exclusion condition (e.g., finding pairs but not the row itself). | Use the `AND` operator with the `<` or `!=` operator on the primary key. | `ON T1.CommonCol = T2.CommonCol AND T1.ID != T2.ID` |
 
------
-
 ## Multiple Join Conditions Mini Playbook (Realistic Queries)
 
 These snippets illustrate the common use cases for joins with multiple conditions.
@@ -31,8 +29,6 @@ INNER JOIN
     AND o.product_sku = i.product_sku;
 ```
 
------
-
 ### 2\. Range/Time Overlap (Price Effective Date)
 
 **Use Case:** Retrieve the correct price for a product based on its `transaction_date`. The price must be effective on that specific date, falling between the price's start and end dates.
@@ -51,8 +47,6 @@ INNER JOIN
     AND t.transaction_date >= p.effective_start_date
     AND t.transaction_date < p.effective_end_date;
 ```
-
------
 
 ### 3\. Conditional Status Match (Active User Tasks)
 
@@ -74,8 +68,6 @@ LEFT JOIN
     -- ensures that inactive users are still returned (as NULLs) if using a LEFT JOIN,
     -- allowing for comparison/filtering based on the left table's full data set later.
 ```
-
------
 
 ### 4\. Excluding Self-Joins (Finding Non-Identical Duplicates)
 
