@@ -2,8 +2,6 @@ Unpivot patterns, also known as **reverse pivoting** or **row-to-column transfor
 
 There are three primary methods for unpivoting data in SQL, ranging from portable to vendor-specific.
 
------
-
 ## 1\. UNION ALL (Portable and Explicit) 📝
 
 The `UNION ALL` method is the most **portable** solution, working across virtually all SQL databases (SQL Server, PostgreSQL, MySQL, Oracle, etc.). It is highly explicit but can become tedious with many columns.
@@ -55,8 +53,6 @@ ORDER BY
 | West | Q1\_Sales | 2200 |
 | ... | ... | ... |
 
------
-
 ## 2\. CROSS APPLY/LATERAL JOIN (SQL Server/PostgreSQL) 🔀
 
 This method is generally cleaner than `UNION ALL` because it avoids repeating the main query multiple times. It's often used when the `UNPIVOT` operator (see below) is not flexible enough.
@@ -85,8 +81,6 @@ CROSS APPLY (
 ORDER BY
     s.Region;
 ```
-
------
 
 ## 3\. UNPIVOT Operator (SQL Server/Oracle) ⚙️
 
