@@ -10,8 +10,6 @@ This cheat sheet compares the two primary forms of the SQL **`CASE`** expression
 | **Readability** | Generally **better** when checking a single column against many possible values. | Generally **better** for complex, multi-field, or range-based logic. |
 | **Final Result** | Both forms produce a single output value based on the first condition that evaluates to TRUE. | Both forms produce a single output value based on the first condition that evaluates to TRUE. |
 
------
-
 ## Simple CASE vs. Searched CASE Mini Playbook (Realistic Queries)
 
 These snippets illustrate the distinct syntax and appropriate use case for each form of the `CASE` expression.
@@ -35,8 +33,6 @@ FROM
     Orders;
 ```
 
------
-
 ### 2\. Searched CASE (Complex/Range Check)
 
 **Use Case:** Assign a user tier based on a `lifetime_spend` range. This requires inequality comparisons, which Simple CASE cannot handle.
@@ -54,8 +50,6 @@ SELECT
 FROM
     Customers;
 ```
-
------
 
 ### 3\. Combining Logic (Searched CASE is Superior)
 
