@@ -1,7 +1,6 @@
 Removing duplicate records is a crucial data cleaning task in SQL. The most common and reliable method uses **Window Functions** to rank the duplicates, allowing you to selectively delete the unwanted copies while preserving the desired "original."
 
-## 1\. The Recommended Method: Using `ROW_NUMBER()` (The Safest Way) 💡
-
+## 1\. The Recommended Method: Using `ROW_NUMBER()` (The Safest Way) 
 This technique is the safest because it explicitly defines which record to **keep** (the original) and which to **delete** (the copies).
 
 ### Technique
