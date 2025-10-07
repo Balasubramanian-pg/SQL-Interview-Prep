@@ -7,7 +7,6 @@
 | **Case-Insensitive Match** | Perform matching without regard to case. | `$LOWER(column) LIKE LOWER('pattern')` | Standard method: convert both the column and the pattern to lower/upper case. |
 | **Extracting Substrings** | Extract a specific part of a string that matches a complex RegEx pattern. | `$REGEXP\_SUBSTR(column, 'regex\_pattern', 1, 1, 'i', 1)` | Uses the RegEx function to return the matching substring or a captured group (syntax varies). |
 
------
 
 ## Pattern Matching Mini Playbook (Realistic Queries)
 
@@ -29,8 +28,6 @@ WHERE
 -- Does not match: PROD-1100 (ends with two numbers)
 ```
 
------
-
 ### 2\. Complex Matching with RegEx (Data Validation)
 
 **Use Case:** Find all rows where the `phone_number` field matches the strict U.S. format: `(XXX) XXX-XXXX`.
@@ -51,8 +48,6 @@ WHERE
 -- $: End of string
 ```
 
------
-
 ### 3\. Case-Insensitive Matching
 
 **Use Case:** Find all log messages containing the word "ERROR" regardless of capitalization (e.g., 'Error', 'error', 'ERROR').
@@ -68,8 +63,6 @@ WHERE
 -- Alternative (RegEx with 'i' flag, if supported):
 -- REGEXP_LIKE(log_message, 'error', 'i')
 ```
-
------
 
 ### 4\. Extracting Data with RegEx
 
@@ -91,5 +84,3 @@ SELECT
 FROM
     Software_Versions;
 ```
-
------
