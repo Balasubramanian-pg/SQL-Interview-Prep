@@ -7,8 +7,6 @@
 | **Comparing to Start** | Measuring all subsequent values against the partition's starting value. | Use **`FIRST_VALUE`** to establish a baseline for comparison/calculation. | `$column - FIRST\_VALUE(column) OVER (PARTITION BY group\_col ORDER BY sort\_col)$` |
 | **Tracking High/Low** | Finding the initial or final record based on a specific ordering criteria. | Use `FIRST_VALUE` or `LAST_VALUE` after ordering by the target column (e.g., highest price). | `$FIRST\_VALUE(return\_col) OVER (ORDER BY target\_col DESC)$` |
 
------
-
 ## FIRST\_VALUE/LAST\_VALUE Mini Playbook (SQL Snippets)
 
 These snippets illustrate the common use cases for `FIRST_VALUE` and `LAST_VALUE` functions.
@@ -31,8 +29,6 @@ FROM
     employee_history;
 ```
 
------
-
 ### 2\. Last Value in Group (Final Status)
 
 Determine the **final project status** for each project based on the most recent update date.
@@ -54,8 +50,6 @@ FROM
     project_updates;
 ```
 
------
-
 ### 3\. Comparing to Start (Deviation)
 
 Calculate the **cumulative deviation** of a product's price from its **initial launch price**.
@@ -72,8 +66,6 @@ SELECT
 FROM
     price_changes;
 ```
-
------
 
 ### 4\. Tracking High/Low
 
