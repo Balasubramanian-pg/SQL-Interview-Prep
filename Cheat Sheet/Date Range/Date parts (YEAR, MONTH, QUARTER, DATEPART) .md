@@ -5,8 +5,6 @@
 | **Extracting a Part** | Retrieving a specific numerical part (e.g., the number `3` for March). | Use the ISO standard **`EXTRACT(part FROM date)`** or the platform-specific **`DATEPART`** function. | ` $EXTRACT(YEAR FROM date\_col)$ (Standard) or  `$DATEPART(year, date\_col)$ (SQL Server)`  | | **Trimming/Rounding** | Reducing the precision of a timestamp to a specific boundary (e.g., reducing a timestamp to the start of the hour or month). | Use the ** `DATE\_TRUNC`** or **`TRUNC` ** function. |  `$DATE\_TRUNC('month', date\_col)$ (PostgreSQL/Redshift)`| | **Standard Naming** | Converting a numerical part into a recognizable name (e.g.,`3`to`March`). | Use the **`DATENAME`** or **`TO\_CHAR` ** function with a format mask. |  `$DATENAME(month, date\_col)$ (SQL Server) or `$TO\_CHAR(date\_col, 'Month')$ (Oracle/PostgreSQL)` |
 | **Grouping/Filtering** | Grouping or filtering based solely on a specific date component. | Use the extraction function directly in the `GROUP BY` or `WHERE` clause. | `$GROUP BY EXTRACT(MONTH FROM date\_col)$` |
 
------
-
 ## Date Parts Mini Playbook (Realistic Queries)
 
 These snippets illustrate common date part extraction, showing syntax variations where necessary.
@@ -34,8 +32,6 @@ ORDER BY
     1, 2, 3;
 ```
 
------
-
 ### 2\. Trimming/Rounding (DATE\_TRUNC)
 
 **Use Case:** Calculate the total number of new users who signed up each calendar **month**.
@@ -55,8 +51,6 @@ ORDER BY
     1;
 -- PostgreSQL/Redshift/Snowflake syntax shown.
 ```
-
------
 
 ### 3\. Standard Naming (DATENAME / TO\_CHAR)
 
@@ -82,8 +76,6 @@ ORDER BY
     DATEPART(dw, session_start_date); 
 -- SQL Server syntax shown.
 ```
-
------
 
 ### 4\. Grouping by Week Number
 
