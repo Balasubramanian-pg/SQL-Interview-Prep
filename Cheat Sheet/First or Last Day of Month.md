@@ -9,8 +9,6 @@ This cheat sheet covers the essential SQL techniques for deriving the **first an
 | **First Day of Year** | Get the exact date of **January 1st** of the year containing `input_date`. | **`DATE_TRUNC('year', input_date)`** or similar truncation function. | `DATE_TRUNC('year', date)` / `DATEFROMPARTS(YEAR(date), 1, 1)` |
 | **Last Day of Year** | Get the exact date of **December 31st** of the year containing `input_date`. | Find the first day of the *next* year and subtract one day. | `DATE_TRUNC('year', date + 1 year) - 1 day` |
 
------
-
 ## First/Last Day of Month/Year Mini Playbook (Realistic Queries)
 
 These snippets illustrate common methods for deriving period boundaries, using syntax examples from different platforms.
@@ -34,8 +32,6 @@ FROM
 -- PostgreSQL syntax shown.
 ```
 
------
-
 ### 2\. Last Day of Month
 
 **Use Case:** Define the end date for a monthly report based on the current date.
@@ -55,8 +51,6 @@ FROM
 -- SQL Server syntax shown.
 ```
 
------
-
 ### 3\. First Day of Year
 
 **Use Case:** Calculate year-to-date (YTD) metrics by establishing the starting date of the year.
@@ -69,8 +63,6 @@ FROM
     Users;
 -- PostgreSQL syntax shown.
 ```
-
------
 
 ### 4\. Last Day of Year
 
