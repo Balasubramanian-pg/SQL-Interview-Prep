@@ -7,8 +7,6 @@
 | **`INNER JOIN`** | Retrieve data from two tables **where a match exists** (existence + data retrieval). | Creates a new result set by combining matching rows. Most traditional and highly optimized method. | Best for performance when you need columns from both tables. Can produce duplicate rows if the join key isn't unique. |
 | **`LEFT JOIN + WHERE IS NULL`** | Check for **non-existence** (finding orphans or anti-join). | Returns all rows from the left table, then filters for those where the right table's key is `NULL`. | The standard, high-performance way to find records in A that *don't* exist in B. |
 
------
-
 ## IN vs. EXISTS vs. JOIN Mini Playbook (Realistic Queries)
 
 These snippets all achieve the same basic goal: **Find all users who have placed at least one order.**
@@ -30,8 +28,6 @@ WHERE
     );
 ```
 
------
-
 ### 2\. Using EXISTS (Existence Check - Correlated)
 
 This is often the most efficient method for existence checks. The inner query runs for each user, but stops execution instantly the moment it finds a single matching order.
@@ -49,9 +45,6 @@ WHERE
         WHERE o.user_id = u.user_id -- The correlation link
     );
 ```
-
------
-
 ### 3\. Using INNER JOIN (Standard Retrieval)
 
 This is the most common and typically fastest method, especially when the query needs to retrieve columns from **both** the `Users` and `Orders` tables. Using `DISTINCT` or `GROUP BY` is necessary if you only want unique user names.
@@ -65,8 +58,6 @@ INNER JOIN
     Orders AS o
     ON u.user_id = o.user_id;
 ```
-
------
 
 ### 4\. Anti-Join Pattern: Finding Non-Existence
 
