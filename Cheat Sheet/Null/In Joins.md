@@ -9,8 +9,6 @@ This cheat sheet covers the specific, and often confusing, behavior of **`NULL` 
 | **Matching NULLs (Workaround)** | `INNER/LEFT JOIN` | `T1.col = T2.col OR (T1.col IS NULL AND T2.col IS NULL)` | Explicitly checks for the case where both values are `NULL` using `IS NULL`. | Forces rows where the join columns are both `NULL` to match. |
 | **Filtering NULLs** | `LEFT JOIN` | `T2.col IS NULL` (in `WHERE`) | Used after a `LEFT JOIN` to identify rows that had **no match** in the right table. | Finds "orphan" records in the left table (Anti-Join Pattern). |
 
------
-
 ## NULL in JOINs Mini Playbook (Realistic Queries)
 
 These snippets illustrate how `NULL` values are handled when joining a primary table (`Employees`) to a configuration table (`Configs`) on an optional field, `department_code`.
@@ -48,8 +46,6 @@ employee_id | setting
 */
 ```
 
------
-
 ### 2\. LEFT JOIN (Preserves Unmatched Left Rows)
 
 **Use Case:** List all employees and their settings, if available. Employees 102 and 103 fail the equality check, resulting in `NULL` on the right side.
@@ -74,8 +70,6 @@ employee_id | department_code | setting
 */
 ```
 
------
-
 ### 3\. Matching NULLs Explicitly (Forcing the Match)
 
 **Use Case:** Join configurations to employees, ensuring that records where **both** `department_code` fields are `NULL` are treated as a match.
@@ -98,8 +92,6 @@ employee_id | setting
 103         | Low  <-- Matched because both department_code were IS NULL
 */
 ```
-
------
 
 ### 4\. Anti-Join to Find Employees with NULL Code
 
