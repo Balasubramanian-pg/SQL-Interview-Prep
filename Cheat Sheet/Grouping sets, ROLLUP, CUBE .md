@@ -7,8 +7,6 @@
 | **CUBE** | **All Combinations** | Generates subtotals for *all possible combinations* of the grouping columns. | Generates a complete cross-tabular report showing subtotals for every dimension and the grand total. |
 | **GROUPING()** | **Identifying Subtotals** | A function used to indicate if a column in the result set is part of the grouping (0) or represents a subtotal (1). | Helps distinguish aggregated rows from regular detail rows in the output. |
 
------
-
 ## GROUPING SETS, ROLLUP, and CUBE Mini Playbook (Realistic Queries)
 
 These snippets illustrate how to generate complex subtotals from a `Sales` table with columns: `year`, `country`, and `product`.
@@ -33,8 +31,6 @@ GROUP BY
     );
 ```
 
------
-
 ### 2\. ROLLUP (Hierarchical Totals)
 
 **Use Case:** Calculate sales for a fixed hierarchy: **(Country, Year)**, then subtotal by **Country**, and finally the **Grand Total**.
@@ -55,8 +51,6 @@ GROUP BY
 ROLLUP (A, B) is equivalent to GROUPING SETS ( (A, B), (A), () )
 */
 ```
-
------
 
 ### 3\. CUBE (All Combinations)
 
