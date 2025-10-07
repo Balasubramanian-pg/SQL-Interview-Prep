@@ -1,7 +1,5 @@
 Removing duplicate records is a crucial data cleaning task in SQL. The most common and reliable method uses **Window Functions** to rank the duplicates, allowing you to selectively delete the unwanted copies while preserving the desired "original."
 
------
-
 ## 1\. The Recommended Method: Using `ROW_NUMBER()` (The Safest Way) 💡
 
 This technique is the safest because it explicitly defines which record to **keep** (the original) and which to **delete** (the copies).
@@ -43,8 +41,6 @@ WHERE lead_id IN (
   * **`PARTITION BY`**: Crucial. List all columns that together define a duplicate (e.g., `(first_name, last_name, phone)`).
   * **`ORDER BY`**: Defines the "winner." For example, use `ORDER BY created_at ASC` to keep the oldest record, or `ORDER BY last_updated_at DESC` to keep the newest record.
 
------
-
 ## 2\. Using `GROUP BY` and `MIN/MAX` (When Keeping One Specific Value)
 
 If you only need to keep one specific unique key (like the `MIN(primary_key)`) for each duplicate group, you can use `GROUP BY` and `HAVING`.
@@ -68,9 +64,7 @@ WHERE lead_id NOT IN (
 
   * **Warning:** This method is concise but lacks the flexibility of `ROW_NUMBER()` if your criteria for keeping the original record is more complex than just `MIN()` or `MAX()`.
 
------
-
-## 3\. Using `DISTINCT` (Read-Only) 🚫
+## 3\. Using `DISTINCT` (Read-Only) 
 
 The `DISTINCT` keyword removes duplicate rows from a result set but **does not modify the underlying table data**. It is only for viewing or inserting into a new table.
 
