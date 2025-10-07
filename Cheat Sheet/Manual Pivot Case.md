@@ -2,8 +2,6 @@ A manual pivot in SQL is achieved through **conditional aggregation**, which use
 
 This is often preferred over database-specific `PIVOT` operators because it is portable across all major SQL databases and allows for more flexible logic.
 
------
-
 ## Manual Pivot with CASE: The Technique
 
 The core pattern involves defining the new columns using a `CASE` statement within an aggregate function, and then grouping the data by the remaining descriptive columns.
@@ -52,8 +50,6 @@ GROUP BY
 ORDER BY
     sales_rep;
 ```
-
------
 
 ## Key Considerations
 
