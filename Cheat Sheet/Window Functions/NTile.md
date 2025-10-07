@@ -7,8 +7,6 @@
 | **Custom Bucketing** | Dividing data into an arbitrary number ($N$) of approximately equal groups. | Use **`NTILE(N)`** with appropriate ordering. | `$NTILE(N) OVER (ORDER BY sorting\_col)$` |
 | **Grouped Bucketing** | Dividing groups into buckets *within* each group (e.g., quartiles per department). | Use **`NTILE(N)`** with a `PARTITION BY` clause. | `$NTILE(N) OVER (PARTITION BY group\_col ORDER BY sorting\_col)$` |
 
------
-
 ## NTILE (Dividing into Buckets) Mini Playbook (SQL Snippets)
 
 These snippets illustrate the common use cases for the `NTILE` function.
@@ -29,8 +27,6 @@ FROM
     customer_data;
 ```
 
------
-
 ### 2\. Decile Analysis
 
 Assign a **performance decile (1 to 10)** to employees based on their annual review score, where 10 is the top decile.
@@ -47,8 +43,6 @@ FROM
     employee_reviews;
 ```
 
------
-
 ### 3\. Custom Bucketing
 
 Divide a set of sales leads into **5 priority buckets**, where leads with the highest scores get the lowest bucket number (e.g., 'Bucket 1' is highest priority).
@@ -64,8 +58,6 @@ SELECT
 FROM
     sales_leads;
 ```
-
------
 
 ### 4\. Grouped Bucketing
 
