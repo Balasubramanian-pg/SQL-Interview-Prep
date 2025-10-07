@@ -1,8 +1,6 @@
 Employee-Manager hierarchies, often called **organizational charts** or **self-referencing relationships**, are stored in a single database table where a **foreign key column** points back to the **primary key** of the same table. The standard and most powerful way to query these structures in SQL is by using **Recursive Common Table Expressions (CTEs)**.
 
------
-
-## The Hierarchy Data Structure 🌳
+## The Hierarchy Data Structure 
 
 The structure requires a minimum of two columns to establish the relationship:
 
@@ -17,8 +15,6 @@ The structure requires a minimum of two columns to establish the relationship:
 | 50 | Manager Bob | 10 |
 | 100 | Employee Carol | 50 |
 | 101 | Employee David | 50 |
-
------
 
 ## 1\. Traversing Down the Hierarchy (Finding All Reports)
 
@@ -63,8 +59,6 @@ FROM
     OrgReports;
 ```
 
------
-
 ## 2\. Traversing Up the Hierarchy (Finding the Management Chain)
 
 This task involves starting at a specific employee and finding their manager, their manager's manager, and so on, up to the top CEO (the root node).
@@ -103,8 +97,6 @@ SELECT
 FROM
     ManagementChain;
 ```
-
------
 
 ## 3\. Finding Direct Reports Only
 
