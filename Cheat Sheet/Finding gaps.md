@@ -2,9 +2,7 @@ Finding gaps in a sequential series of data (like dates, IDs, or invoice numbers
 
 Here are the primary techniques for detecting missing records in a sequence.
 
------
-
-## 1\. Using Window Functions (LAG/LEAD) 🎣
+## 1\. Using Window Functions (LAG/LEAD)
 
 This is the most common and efficient method for non-continuous sequences (i.e., when you only have the existing numbers and need to find gaps between them). It works by comparing the current row's value to the previous row's value.
 
@@ -39,9 +37,7 @@ ORDER BY
 
 **Result Interpretation:** If `previous_id` is 105 and `invoice_id` is 108, the difference is 3. The query returns a gap from 106 to 107.
 
------
-
-## 2\. Using Date Arithmetic (Date Gaps) 🗓️
+## 2\. Using Date Arithmetic (Date Gaps) 
 
 This is a specific application of the `LAG` technique for date sequences. The comparison must check the date difference, not just the numerical difference.
 
@@ -70,10 +66,7 @@ ORDER BY
     gap_starts_at;
 -- PostgreSQL/MySQL syntax shown. Use DATEDIFF in SQL Server.
 ```
-
------
-
-## 3\. Using Left Join / EXCEPT with a Sequence Generator ⚙️
+## 3\. Using Left Join / EXCEPT with a Sequence Generator
 
 If you know the expected start and end of the full sequence, you can generate all possible numbers/dates and then check which ones are missing from your table. This is often the most explicit way to list all gaps.
 
