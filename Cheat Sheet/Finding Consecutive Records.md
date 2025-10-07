@@ -2,11 +2,8 @@ Finding **consecutive records** in SQL involves identifying sequences of data wh
 
 The most reliable and standard technique for solving this problem is using **Window Functions**, specifically **`LAG()`** or **`LEAD()`**, to compare the current row's data against its predecessor or successor.
 
------
-
 ## 1\. Finding Consecutive IDs or Dates (Sequence-Based)
-
-This technique identifies records where the current value is exactly one step higher (or one day later) than the previous value.
+que identifies records where the current value is exactly one step higher (or one day later) than the previous value.
 
 ### Technique
 
@@ -45,8 +42,6 @@ ORDER BY
 
   * **`PARTITION BY user_id`**: Ensures the comparison only happens within the same user's events.
   * **`event_id = previous_event_id + 1`**: Confirms the current ID is immediately sequential to the last one.
-
------
 
 ## 2\. Finding Runs of Identical Statuses (Value-Based)
 
