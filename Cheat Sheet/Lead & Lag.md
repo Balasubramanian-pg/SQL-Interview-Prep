@@ -9,8 +9,6 @@ This cheat sheet covers the `LAG` and `LEAD` window functions for accessing data
 | **Forecasting/Lookahead** | Accessing the next row's value from the current row. | Use `LEAD` to retrieve the subsequent value. | `$LEAD(column, 1, 0) OVER (PARTITION BY group_col ORDER BY sort_col)$` |
 | **Checking Data Gaps/Skips** | Identifying if there's a break in a sequential series (e.g., dates, IDs). | Compare the current value to the next value (`LEAD`) or previous value (`LAG`). | `$IF (col = LAG(col) + 1, 'No Gap', 'Gap')$` or similar logic. |
 
------
-
 ## LAG/LEAD Mini Playbook (SQL Snippets)
 
 These snippets illustrate the common use cases for `LAG` and `LEAD` functions.
@@ -32,8 +30,6 @@ FROM
     daily_stock_data;
 ```
 
------
-
 ### 2\. Calculating Differences/Deltas (LAG)
 
 Calculate the **daily change (delta)** in the `amount` of a transaction within a user's history.
@@ -51,8 +47,6 @@ FROM
     transactions;
 ```
 
------
-
 ### 3\. Forecasting/Lookahead (LEAD)
 
 Find the **next scheduled delivery date** for a specific order.
@@ -69,8 +63,6 @@ SELECT
 FROM
     deliveries;
 ```
-
------
 
 ### 4\. Checking Data Gaps/Skips (LAG/LEAD)
 
