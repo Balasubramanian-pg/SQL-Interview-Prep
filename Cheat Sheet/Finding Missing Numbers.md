@@ -2,10 +2,7 @@ Finding missing numbers in a sequential series of data (like primary keys, invoi
 
 The most effective methods rely on either **Window Functions** for partial analysis or a **Sequence Generator** for finding all missing numbers between a known start and end point.
 
------
-
-## 1\. Using Window Functions (`LAG`/`LEAD`) 🎣
-
+## 1\. Using Window Functions (`LAG`/`LEAD`)
 This is the most efficient method when you only have the existing numbers and want to find gaps between them. It compares the current value to the previous value.
 
 ### Technique
@@ -39,9 +36,7 @@ ORDER BY
 
 **Result Interpretation:** If `previous_id` is 105 and `invoice_id` is 108, the difference is 3. The query identifies a gap that starts at 106 and ends at 107.
 
------
-
-## 2\. Using a Sequence Generator (`EXCEPT` or `LEFT JOIN`) ⚙️
+## 2\. Using a Sequence Generator (`EXCEPT` or `LEFT JOIN`) 
 
 If you know the expected start and end points of the entire sequence (e.g., IDs should run from 1 to 1000), you can generate a full set of numbers and then subtract the ones that actually exist in your table.
 
