@@ -9,8 +9,6 @@ Avoiding `SELECT *` (selecting all columns) is a crucial best practice in SQL fo
 | **Query Stability** | If the underlying table schema changes (e.g., columns are reordered, renamed, or new ones are added), `SELECT *` breaks code in downstream applications that rely on column position or implicitly adds unexpected data to your reports. | **Worse.** Leads to broken reports and unstable code. |
 | **Security Principle** | It exposes sensitive or unnecessary data fields (e.g., internal IDs, audit columns, or unmasked PII) to an application layer or user who doesn't need to see them. | **Better.** Reduces exposure of sensitive information. |
 
------
-
 ## Recommended Alternatives (Best Practices) ✅
 
 The best practice is always to **explicitly list the columns** you need.
