@@ -2,9 +2,7 @@ Finding records in one table that **do not exist** in another table is a very co
 
 There are three primary, high-performance methods for achieving this: **`LEFT JOIN` with `WHERE IS NULL`**, **`NOT EXISTS`**, and the **`EXCEPT`** (or `MINUS`) set operator.
 
------
-
-## 1\. LEFT JOIN with WHERE IS NULL (The Most Common) 🎣
+## 1\. LEFT JOIN with WHERE IS NULL (The Most Common) 
 
 This is the most traditional, widely supported, and often highly performant method.
 
@@ -29,9 +27,7 @@ WHERE
     o.order_id IS NULL; -- Only keep rows where the match failed (right side is NULL)
 ```
 
------
-
-## 2\. NOT EXISTS (Robust and Efficient) 🚫
+## 2\. NOT EXISTS (Robust and Efficient) 
 
 The `NOT EXISTS` operator uses a correlated subquery to check for the absence of a matching row.
 
@@ -58,9 +54,7 @@ WHERE
 ```
 
   * **Performance Note:** For large tables, `NOT EXISTS` is often the most efficient method because the subquery can stop searching immediately upon finding the first match.
-
------
-
+    
 ## 3\. EXCEPT / MINUS (Set Operator) ➖
 
 The `EXCEPT` (or `MINUS` in Oracle) operator performs a mathematical set difference, returning all rows from the first `SELECT` statement that are *not* found in the second.
