@@ -9,8 +9,6 @@ This cheat sheet focuses on two common window function applications: **Running T
 | **Cumulative Average** | Calculating the average of **all** preceding rows and the current row. | Use the `AVG()` function with an unbounded preceding window frame. | `$AVG(column) OVER (PARTITION BY group_col ORDER BY sort_col ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)$` |
 | **Rolling Sum/Total** | Calculating the sum of a fixed number of rows centered around the current row. | Use the `SUM()` function with a bounded window frame (preceding and following). | `$SUM(column) OVER (PARTITION BY group_col ORDER BY sort_col ROWS BETWEEN N PRECEDING AND M FOLLOWING)$` |
 
------
-
 ## Running Totals & Moving Averages Mini Playbook (SQL Snippets)
 
 These snippets illustrate the common use cases for cumulative and rolling calculations.
@@ -34,8 +32,6 @@ FROM
     daily_sales;
 ```
 
------
-
 ### 2\. Simple Moving Average (SMA)
 
 Calculate the **3-day Simple Moving Average** of a stock's closing price.
@@ -55,8 +51,6 @@ FROM
     stock_prices;
 ```
 
------
-
 ### 3\. Cumulative Average
 
 Calculate the **average test score** for a student up to the current test.
@@ -75,8 +69,6 @@ SELECT
 FROM
     student_scores;
 ```
-
------
 
 ### 4\. Rolling Sum/Total
 
