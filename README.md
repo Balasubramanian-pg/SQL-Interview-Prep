@@ -2,8 +2,6 @@
 
 This repository contains a curated collection of SQL interview questions, organized by the companies they are associated with. Each entry provides a direct link to the problem description and its solution, serving as a practical resource for interview preparation.
 
----
-
 ## Affine Technologies
 
 *   [Find the Second Wednesday of Every Month](https://github.com/Balasubramanian-pg/SQL-Interview-Pewp/blob/main/Interview%20Prep/Affine%20Technologies/Find%202nd%20Wednesday%20of%20Every%20Month.md)
