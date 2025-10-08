@@ -7,7 +7,6 @@
 | **Grouping Status/Flags** | Grouping data based on complex status logic derived from multiple columns. | Use `CASE` to simplify or standardize status codes into meaningful groups. | `$GROUP BY (CASE WHEN col1=A AND col2=B THEN 'Special' ELSE 'Standard' END)$` |
 | **Grouping by Null/Missing Values** | Standardizing the treatment of `NULL` or zero values into a single reporting group. | Use `CASE` to explicitly assign a name (e.g., 'Unknown' or 'No Value') to the missing group. | `$GROUP BY (CASE WHEN col IS NULL THEN 'Unknown' ELSE col END)$` |
 
------
 
 ## GROUP BY with CASE Statements Mini Playbook (Realistic Queries)
 
@@ -38,8 +37,6 @@ GROUP BY
     END;
 ```
 
------
-
 ### 2\. Grouping Status/Flags (Risk Categories)
 
 **Use Case:** Group accounts based on a derived risk score where different combinations of flags map to the same category.
@@ -65,8 +62,6 @@ GROUP BY
     END;
 ```
 
------
-
 ### 3\. Grouping by Null/Missing Values
 
 **Use Case:** Group sales by representative, treating all sales without an assigned representative (`NULL`) as a single 'Unassigned' group.
@@ -88,8 +83,6 @@ GROUP BY
         ELSE sales_rep_name
     END;
 ```
-
------
 
 ### 4\. Grouping by Column Alias (If supported by your SQL dialect)
 
