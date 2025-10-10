@@ -17,8 +17,6 @@ The core pattern involves three steps:
 | **Pivoting Amounts (SUM)** | `SUM(CASE WHEN [Category] = 'Value_A' THEN [Amount_Column] ELSE 0 END) AS [Column_A]` |
 | **Pivoting Counts (COUNT)** | `SUM(CASE WHEN [Category] = 'Value_B' THEN 1 ELSE 0 END) AS [Count_Column_B]` |
 
------
-
 ## Pivot-Style Mini Playbook (Realistic Query)
 
 ### Scenario: Pivoting Order Statuses
@@ -67,7 +65,6 @@ ORDER BY
 | West | 0.00 | 9500.00 | 0.00 | 60 |
 | Central | 100.00 | 4500.00 | 50.00 | 30 |
 
------
 
 ## Key Considerations
 
