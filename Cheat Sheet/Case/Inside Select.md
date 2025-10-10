@@ -25,8 +25,6 @@ FROM
     Orders;
 ```
 
------
-
 ## CASE in WHERE (Conditional Filtering)
 
 When used in the `WHERE` clause, `CASE` acts as a **conditional filter**, allowing the filtering logic itself to change based on the data.
@@ -54,8 +52,6 @@ WHERE
         ELSE status = 'Active'
     END;
 ```
-
------
 
 ## CASE in ORDER BY (Custom Sorting)
 
