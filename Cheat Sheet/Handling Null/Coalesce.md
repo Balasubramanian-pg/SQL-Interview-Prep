@@ -6,8 +6,6 @@
 | **`ISNULL`** | **Proprietary** | **SQL Server, MS Access** | Returns the data type of the **first argument** (coercing the second argument's type if necessary). | **Accepts only two arguments** (the column and the replacement value). |
 | **`IFNULL`** | **Proprietary** | **MySQL, SQLite, Oracle** (as a synonym for `COALESCE`) | Returns the data type of the first non-NULL argument. | **Accepts only two arguments** (the column and the replacement value). |
 
------
-
 ## COALESCE vs. ISNULL vs. IFNULL Mini Playbook (Realistic Queries)
 
 These snippets illustrate the primary differences, focusing on portability and the handling of multiple fallback values.
@@ -32,8 +30,6 @@ FROM
 -- Example: COALESCE(NULL, NULL, 'generic@org.com', 'default') => 'generic@org.com'
 ```
 
------
-
 ### 2\. ISNULL (SQL Server Specific)
 
 **Use Case:** Replace a NULL `sale_price` with the `list_price` if the sale price is missing.
@@ -52,8 +48,6 @@ FROM
 -- the result will be of type INT (type of the first argument), which may truncate list_price.
 ```
 
------
-
 ### 3\. IFNULL (MySQL/SQLite Specific)
 
 **Use Case:** Replace a NULL `commission_rate` with a default rate of `0.05`.
@@ -70,8 +64,6 @@ FROM
     
 -- Example (MySQL): IFNULL(NULL, 0.05) => 0.05
 ```
-
------
 
 ### 4\. Portability and Preference
 
