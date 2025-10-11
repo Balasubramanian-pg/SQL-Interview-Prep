@@ -9,8 +9,6 @@ This cheat sheet covers the essential SQL techniques for **limiting the number o
 | **`FETCH NEXT`** | ANSI SQL Standard, Oracle, SQL Server (2012+) | `$ORDER BY col [OFFSET M ROWS] FETCH NEXT N ROWS ONLY$` | The modern, portable ANSI standard for pagination. |
 | **Window Functions** | All major databases | `$ROW_NUMBER() OVER (ORDER BY col)$` | Complex top-N per-group analysis (e.g., finding the top 3 products per department). |
 
------
-
 ## Limiting Result Sets Mini Playbook (Realistic Queries)
 
 These snippets illustrate the primary methods for limiting results.
@@ -30,8 +28,6 @@ ORDER BY
     order_date DESC -- Must sort to ensure you get the "most recent"
 LIMIT 10;
 ```
-
------
 
 ### 2\. LIMIT with OFFSET (Pagination)
 
@@ -54,8 +50,6 @@ ORDER BY
 LIMIT 50 OFFSET 100;
 ```
 
------
-
 ### 3\. TOP (SQL Server)
 
 **Use Case:** Select the top 5 highest-paid employees.
@@ -69,8 +63,6 @@ FROM
 ORDER BY
     salary DESC;
 ```
-
------
 
 ### 4\. FETCH NEXT / OFFSET (ANSI Standard)
 
@@ -87,8 +79,6 @@ ORDER BY
 OFFSET 20 ROWS        -- Skip the first 20 rows (Page 1)
 FETCH NEXT 20 ROWS ONLY; -- Retrieve the next 20 rows (Page 2)
 ```
-
------
 
 ### 5\. Window Function (Top N Per Group)
 
