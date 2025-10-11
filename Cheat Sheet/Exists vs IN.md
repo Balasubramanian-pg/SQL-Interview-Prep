@@ -2,8 +2,6 @@ The choice between **`EXISTS`** and **`IN`** for large datasets is a critical pe
 
 Here is a breakdown of the differences and the generally preferred approach for large datasets.
 
------
-
 ## EXISTS vs. IN: Core Differences
 
 | Operator | Syntax Type | How it Works | NULL Handling | Performance on Large Data |
@@ -11,13 +9,11 @@ Here is a breakdown of the differences and the generally preferred approach for 
 | **`EXISTS`** | **Correlated Subquery** | Executes once for **every row** in the outer query. It returns `TRUE` as soon as it finds **the first match** in the subquery. | Robust. Since it checks for the *existence* of a row, it doesn't perform value comparison and is unaffected by `NULL` values. | **Often Faster** (Preferred for large *inner* tables). Highly optimized for finding the first match. |
 | **`IN`** | **Non-Correlated Subquery** | Executes the subquery **once** to build a complete list of values, then checks if the outer column is present in that list. | Sensitive. If the subquery result contains a **`NULL` value**, the entire `IN` condition can resolve to `UNKNOWN`, failing the filter. | **Often Faster** (Preferred for large *outer* tables or small *inner* tables). |
 
------
-
 ## When to Choose Which for Large Datasets
 
 For large datasets, the general rule is to analyze the size of the tables involved in the outer query and the subquery.
 
-### 1\. Choose EXISTS for Large Subqueries (Inner Tables) 🚀
+### 1\. Choose EXISTS for Large Subqueries (Inner Tables) 
 
 **`EXISTS`** is generally preferred when the **subquery table is large** because it uses a **correlated subquery**.
 
