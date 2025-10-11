@@ -7,8 +7,6 @@
 | **`RIGHT`** | Extract a specified number of characters from the **end** (right side) of a string. | `$RIGHT(string, length)$` | Quick way to get suffixes, extensions, or trailing data. |
 | **Finding Position** | Used *with* `SUBSTRING` to dynamically find the starting point of the substring. | `$SUBSTRING(string, INSTR(string, delimiter) + 1, length)$` | Requires a positional function like `INSTR`, `CHARINDEX`, or `POSITION` (syntax varies by DB). |
 
------
-
 ## SUBSTRING/LEFT/RIGHT Mini Playbook (Realistic Queries)
 
 These snippets illustrate the common and combined use cases for these string functions.
@@ -27,8 +25,6 @@ FROM
 -- Example: SUBSTRING('240115-A45B-NY', 8, 4) => 'A45B'
 ```
 
------
-
 ### 2\. LEFT (Extracting Prefixes)
 
 **Use Case:** Retrieve the first three characters of a part number to identify its manufacturing batch.
@@ -43,8 +39,6 @@ FROM
 -- Example: LEFT('PN-78592', 3) => 'PN-'
 ```
 
------
-
 ### 3\. RIGHT (Extracting Suffixes)
 
 **Use Case:** Extract the file extension (last 3 characters) from a file name.
@@ -58,8 +52,6 @@ FROM
 
 -- Example: RIGHT('report.pdf', 3) => 'pdf'
 ```
-
------
 
 ### 4\. SUBSTRING with Dynamic Position (Extracting Between Delimiters)
 
