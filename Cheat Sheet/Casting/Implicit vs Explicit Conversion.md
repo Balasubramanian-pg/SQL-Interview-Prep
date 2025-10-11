@@ -1,7 +1,5 @@
 Implicit and explicit conversion refer to how data types are changed in SQL. **Explicit conversion** is when you manually direct the database to change a data type using functions like `CAST` or `CONVERT`. **Implicit conversion** is when the database automatically changes a data type to execute a comparison or operation without your instruction.
 
------
-
 ## Implicit Conversion (Automatic)
 
 Implicit conversion occurs when the database engine automatically converts data from one type to another to satisfy an operation. The database follows a predefined set of type precedence rules (e.g., converting a `VARCHAR` to an `INT` when comparing it to an `INT`).
@@ -20,15 +18,13 @@ FROM Employees
 WHERE employee_id = '105'; -- employee_id is INT, but compared to VARCHAR '105'
 ```
 
-### Risks ⚠️
+### Risks
 
 1.  **Performance Degradation:** If the database implicitly converts a column in a `WHERE` clause (e.g., converting an indexed `VARCHAR` column to `INT`), it often negates the use of the index, forcing a costly **table scan**.
 2.  **Data Loss:** If the conversion is from a less precise type (like `DECIMAL`) to a more restrictive one (like `INT`), data can be truncated without warning.
 3.  **Inconsistency:** Conversion rules vary between database systems (MySQL, PostgreSQL, SQL Server), making the behavior non-portable.
 
------
-
-## Explicit Conversion (Manual) 💪
+## Explicit Conversion (Manual)
 
 Explicit conversion is the preferred and safer method, where you explicitly instruct the database on the conversion path using standard functions.
 
