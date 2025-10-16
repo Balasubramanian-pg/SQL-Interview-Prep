@@ -1,7 +1,5 @@
 Here’s a structured breakdown of what to expect for **SQL queries in data analysis, user queries, testing, and low-medium complexity ETL logic**, tailored to your background (B.Com + MBA in Business Analytics) and job search context (3.5 years of experience, Power BI/Tally/Excel, C-suite reporting).
 
----
-
 ### **1. Data Analysis Queries**
 **Purpose:** Extract insights, validate hypotheses, or answer ad-hoc business questions.
 **Expectations:**
@@ -52,8 +50,6 @@ ORDER BY 1;
 >   - *"How would you handle missing data in the `order_date` column?"*
 >   - *"Can you modify this to exclude refunded orders?"*
 
----
-
 ### **2. User Queries (Ad-Hoc Requests)**
 **Purpose:** Quick, accurate responses to stakeholder asks (e.g., "Show me top 10 products by margin in Karnataka").
 **Expectations:**
@@ -93,8 +89,6 @@ GROUP BY 1;
 >   - *"Do we exclude cancelled orders?"*
 > - Use **temp tables** for intermediate steps if the query is complex.
 
----
-
 ### **3. Testing Queries**
 **Purpose:** Validate data quality, ETL outputs, or edge cases.
 **Expectations:**
@@ -129,8 +123,6 @@ WHERE revenue < 0;
 > **🔹 Red Flags in Interviews:**
 > - Not testing for **nulls** or **divide-by-zero** errors.
 > - Assuming all joins are `INNER` (forgetting `LEFT/RIGHT` for completeness).
-
----
 
 ### **4. Low-Medium Complexity ETL Logic**
 **Purpose:** Transform raw data into analysis-ready formats.
