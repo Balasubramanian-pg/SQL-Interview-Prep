@@ -1,4 +1,4 @@
-Here’s a structured breakdown of what to expect for **SQL queries in data analysis, user queries, testing, and low-medium complexity ETL logic**, tailored to your background (B.Com + MBA in Business Analytics) and job search context (3.5 years of experience, Power BI/Tally/Excel, C-suite reporting).
+What to expect for **SQL queries in data analysis, user queries, testing, and low-medium complexity ETL logic**, tailored to your background (B.Com + MBA in Business Analytics) and job search context (3.5 years of experience, Power BI/Tally/Excel, C-suite reporting).
 
 ### **1. Data Analysis Queries**
 **Purpose:** Extract insights, validate hypotheses, or answer ad-hoc business questions.
@@ -158,7 +158,6 @@ WHERE order_date > (SELECT MAX(order_date) FROM target_orders);
 > - **Idempotency:** Ensure rerunning the ETL doesn’t duplicate data.
 > - **Logging:** Always log errors (e.g., failed rows) for debugging.
 
----
 ### **5. Interview-Specific Expectations**
 | **Topic**               | **What They Test**                          | **Example Question**                          |
 |-------------------------|--------------------------------------------|-----------------------------------------------|
@@ -167,8 +166,6 @@ WHERE order_date > (SELECT MAX(order_date) FROM target_orders);
 | **Problem-Solving**     | Debugging, optimizing slow queries         | *"This query takes 10 minutes. How would you fix it?"* |
 | **ETL Design**          | Handling data pipelines                    | *"How would you load daily sales data from CSV to a database?"* |
 | **Edge Cases**          | Robustness (e.g., nulls, duplicates)       | *"What if a customer has two ‘first orders’ on the same day?"* |
-
-
 
 ### **6. Tools & Extensions You Might Encounter**
 | **Tool**               | **Relevance**                              | **Example**                                  |
@@ -194,7 +191,6 @@ WHERE order_date > (SELECT MAX(order_date) FROM target_orders);
    - *"Tell me about a time you found a data error with SQL."*
    - *"How would you explain a complex query to a non-technical stakeholder?"*
 
----
 ### **8. Sample Interview Workflow**
 1. **Clarify Requirements:**
    - *"What’s the expected output format?"*
@@ -211,14 +207,13 @@ WHERE order_date > (SELECT MAX(order_date) FROM target_orders);
 4. **Explain Your Thought Process:**
    - *"I used a window function here because we need to compare each row to its previous value."*
 
----
 ### **9. Your Advantage**
 - **Domain Knowledge:** Your finance/taxation background is a **plus** for queries involving:
   - **Reconciliations** (e.g., matching invoices to payments).
   - **Time-Based Aggregations** (fiscal years in Tally → `DATE_TRUNC` in SQL).
   - **Executive Reporting** (e.g., "Show me top 5 high-value customers with declining spend").
 
-> **💡 Tailor Examples to Your Experience:**
+> **Tailor Examples to Your Experience:**
 > - *"In my current role, I used SQL to automate a monthly P&L report previously done in Excel, reducing errors by 30%."*
 
 ### **Next Steps**
