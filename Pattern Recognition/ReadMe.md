@@ -168,7 +168,7 @@ WHERE order_date > (SELECT MAX(order_date) FROM target_orders);
 | **ETL Design**          | Handling data pipelines                    | *"How would you load daily sales data from CSV to a database?"* |
 | **Edge Cases**          | Robustness (e.g., nulls, duplicates)       | *"What if a customer has two ‘first orders’ on the same day?"* |
 
----
+
 
 ### **6. Tools & Extensions You Might Encounter**
 | **Tool**               | **Relevance**                              | **Example**                                  |
@@ -179,7 +179,6 @@ WHERE order_date > (SELECT MAX(order_date) FROM target_orders);
 | **Stored Procedures**  | Reusable logic (common in ETL)             | `CREATE PROCEDURE update_customer_status() BEGIN ... END;` |
 | **Indexing**           | Performance tuning                         | `CREATE INDEX idx_customer_id ON orders(customer_id);` |
 
----
 ### **7. How to Prepare**
 1. **Practice Platforms:**
    - [LeetCode (SQL Problems)](https://leetcode.com/problemset/database/)
@@ -222,7 +221,6 @@ WHERE order_date > (SELECT MAX(order_date) FROM target_orders);
 > **💡 Tailor Examples to Your Experience:**
 > - *"In my current role, I used SQL to automate a monthly P&L report previously done in Excel, reducing errors by 30%."*
 
----
 ### **Next Steps**
 1. **Mock Scenario:** Try this problem:
    > *"Write a query to identify customers whose average order value (AOV) dropped by >20% compared to their first 3 months."*
