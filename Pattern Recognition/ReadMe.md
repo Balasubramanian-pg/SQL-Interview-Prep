@@ -1,3 +1,121 @@
+# The Discipline of SQL Interview Preparation
+
+The study of SQL reveals a deeper encounter with order itself. Every query becomes a small act of structuring chaos, and every pattern reflects a principle that governs the movement from raw complexity to usable clarity. This roadmap outlines thirty distinct problem types that appear in interviews not by accident but because they expose a candidate’s ability to impose structure, recognize patterns, and act responsibly within a relational system.
+
+## **I. Core Pattern Recognition (1–10)**
+
+These patterns test whether an individual can identify regularity within variation. Each represents a fundamental mode of analytical reasoning.
+
+1. **Finding Top N Records per Group**
+   The task examines one’s capacity to distinguish hierarchy within categories, imposing ranking where none is explicitly provided.
+
+2. **Calculating Running Totals**
+   Running totals reflect accumulation through time, demonstrating how present states emerge from prior actions.
+
+3. **Identifying Gaps in Sequences**
+   Gaps reveal discontinuity. They are signs of missing information and demand recognition before responsible decision making.
+
+4. **Finding Islands of Consecutive Values**
+   Islands show coherence within apparent randomness. This pattern reveals the hidden boundaries between order and fragmentation.
+
+5. **Calculating Moving Averages**
+   Moving averages smooth volatility, allowing trends to become intelligible without distortion from noise.
+
+6. **Pivoting Data**
+   Pivoting demonstrates the ability to reorient perspective, transforming detail-oriented structure into comparative form.
+
+7. **Unpivoting Data**
+   Unpivoting restores underlying simplicity by returning overly complex structures to a normalized foundation.
+
+8. **Finding Duplicate Records**
+   Duplicates indicate disorder in the system. Identifying them is a step toward restoring accuracy and integrity.
+
+9. **Navigating Hierarchical Data**
+   Hierarchies represent nested order. Understanding them means understanding how systems embed meaning at multiple levels.
+
+10. **Identifying First and Last Events per Group**
+    These boundaries provide orientation. They define beginnings and conclusions within a dataset’s internal narrative.
+
+## **II. Relational Logic and Joins (11–16)**
+
+Joins examine whether one understands interconnectedness. Data rarely stands alone. Meaning emerges in relation.
+
+11. **Inner vs Outer Join Structures**
+    Each join type reflects a philosophical stance on what counts as relevant information.
+
+12. **Anti-Joins and Semi-Joins**
+    These patterns identify absence, a necessary complement to presence in any coherent system.
+
+13. **Unmatched Records**
+    Unmatched data signals broken relationships, demanding careful investigation.
+
+14. **Multi-table Joins with Constraints**
+    Such queries test whether complexity can be navigated without losing orientation.
+
+15. **Conditional Joins**
+    Conditional logic reflects nuanced associations beyond simple equivalence.
+
+16. **Self Joins for Pattern Detection**
+    A self-join forces reflection: a dataset must understand itself to reveal its deeper structure.
+
+## **III. Window Function Mastery (17–22)**
+
+Window functions provide a framework for examining an element in context, not isolation.
+
+17. **Ranking Patterns**
+    Rankings impose order where competition or priority must be discerned.
+
+18. **Lag and Lead**
+    These functions allow comparison across time, revealing causality and progression.
+
+19. **Sessionization**
+    Sessions mark boundaries of activity, distinguishing one coherent period from another.
+
+20. **Percentiles and Distribution Analysis**
+    Distributions reveal natural variation. Percentiles impose structure upon that variation.
+
+21. **Frame Clauses and Moving Windows**
+    Frames define scope, limiting attention to what is immediately relevant.
+
+22. **Cumulative Distinct Counts**
+    Distinct accumulation highlights uniqueness within repetition, a subtle but essential observation.
+
+## **IV. Data Integrity and Cleaning Patterns (23–27)**
+
+Disorder in data reflects disorder in systems. Cleaning restores reliability.
+
+23. **Imputing Missing Values**
+    Missing data must be treated with caution, neither ignored nor fabricated irresponsibly.
+
+24. **Standardizing Categories**
+    Standardization transforms multiplicity into unity, enabling consistent interpretation.
+
+25. **Outlier Detection**
+    Outliers mark deviation. Understanding them prevents misdirection.
+
+26. **Deduplication with Window Functions**
+    Deduplication eliminates redundancy and improves the coherence of downstream analysis.
+
+27. **Referential Integrity Validation**
+    A system is only as strong as the relationships that bind it. These must be maintained.
+
+## **V. Real-world Analytical Patterns (28–30)**
+
+These topics reflect scenarios where technical clarity meets organizational responsibility.
+
+28. **Revenue Recognition Patterns**
+    Revenue must be understood through time, obligation, and fulfillment. The pattern is ethical as much as technical.
+
+29. **Churn and Retention Calculations**
+    These analyses reveal the stability of a system’s relationships and the cost of neglect.
+
+30. **Cohort Analysis**
+    Cohorts expose developmental trajectories. They show how different groups evolve within the same environment.
+
+## **Closing Reflection**
+
+This roadmap outlines not only technical exercises but invitations to think more clearly. SQL becomes a discipline when approached with seriousness, responsibility, and an interest in uncovering the underlying order within complexity. Mastery emerges when one recognizes that every query is a small argument for structure in a world that naturally tends toward disorder.
+
 What to expect for **SQL queries in data analysis, user queries, testing, and low-medium complexity ETL logic**, tailored to your background (B.Com + MBA in Business Analytics) and job search context (3.5 years of experience, Power BI/Tally/Excel, C-suite reporting).
 
 ### **1. Data Analysis Queries**
