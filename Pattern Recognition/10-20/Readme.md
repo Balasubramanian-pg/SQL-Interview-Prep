@@ -1,4 +1,4 @@
-# README: The Discipline of SQL Pattern Recognition (10–19)
+# The Discipline of SQL Pattern Recognition (10–19)
 
 Pattern recognition in SQL represents the ongoing effort to transform uncertainty into clarity. Each topic in this collection exposes a distinct dimension of analytical structure. Together, they form a progression that teaches the individual to reason systematically, to recognize underlying regularities, and to bring coherence to data that initially appears fragmented or disordered.
 
