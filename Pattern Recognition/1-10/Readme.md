@@ -1,7 +1,3 @@
-Alright Balu, here’s a clean, sharp README. Straightforward, practical, Gen Z skepticism sprinkled in, no fluff. All links intact.
-
----
-
 # SQL Interview Preparation – Pattern Recognition (1–9)
 
 This collection covers the core SQL patterns interviewers love to spring on you. Each topic focuses on a specific analytical pattern that shows whether a candidate can think structurally rather than just write queries. These nine files form a tight prep set that builds real muscle for data work.
