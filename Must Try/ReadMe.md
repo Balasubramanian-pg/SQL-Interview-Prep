@@ -3,8 +3,6 @@
 This document provides a central index for a curated collection of SQL interview questions. 
 The problems are designed to test a range of skills, from basic queries to complex window functions and analytical reasoning. Each item links directly to the problem statement and its solution.
 
----
-
 *   [1. Advertiser Status](https://github.com/Balasubramanian-pg/SQL-Interview-Pewp/blob/main/Must%20Try/1.%20Advertiser%20Status.md)
 *   [2. Average Deal Size (Part 2)](https://github.com/Balasubramanian-pg/SQL-Interview-Pewp/blob/main/Must%20Try/2.%20Average%20Deal%20Size%20(Part%202).md)
 *   [3. Average Post Hiatus (Part 1)](https://github.com/Balasubramanian-pg/SQL-Interview-Pewp/blob/main/Must%20Try/3.%20Average%20Post%20Hiatus%20(Part%201).md)
