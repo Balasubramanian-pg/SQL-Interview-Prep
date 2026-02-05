@@ -77,7 +77,6 @@ WHERE
 > [!NOTE]  
 > The `INTERVAL` syntax may vary across SQL dialects (e.g., `DATE_SUB(CURRENT_DATE, INTERVAL 5 YEAR)` in MySQL).  
 
----
 
 ## 4. **Problem 3: Find Employees Whose Salary is Below the Average Salary of Recent Hires**  
 
@@ -107,7 +106,6 @@ WHERE
 > [!IMPORTANT]  
 > The subquery must return a single value for the comparison to work. Ensure the subquery logic is correct.  
 
----
 
 ## 5. **Key Concepts**  
 
@@ -126,7 +124,6 @@ WHERE
 > [!WARNING]  
 > Subqueries can impact performance if not optimized. Test with large datasets to ensure efficiency.  
 
----
 
 This document covers common SQL interview questions related to employee salary analysis, leveraging window functions, CTEs, and date arithmetic.  
 
