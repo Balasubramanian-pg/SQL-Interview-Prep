@@ -64,7 +64,6 @@ GO
 SELECT * FROM sales_data;
 ```  
 
----
 
 ## 4. **Solution and Explanation**  
 The problem is best solved in sequential steps using Common Table Expressions (CTEs).  
@@ -116,7 +115,6 @@ The final requirement is to only show records representing a profit. This is a s
 
 - **Logic**: We add a `WHERE` clause to the final `SELECT` statement to filter for rows where `percentage_variance` is greater than zero.  
 
----
 
 ## 5. **The Complete Solution (Using CTEs)**  
 This final query combines all the steps into a single, readable, and maintainable block.  
@@ -154,7 +152,6 @@ WHERE
 > [!TIP]  
 > This modular approach using CTEs makes the query easier to debug and maintain.  
 
----
 
 This solution demonstrates advanced SQL techniques, including window functions, CTEs, and conditional filtering, making it a valuable addition to your SQL toolkit.  
 
