@@ -48,7 +48,6 @@
 *   **Question:** "For each user and their order, show the order amount, the running total of their orders (chronologically), and what percentage that specific order is of their lifetime total value."
 *   **Tests:** Combining different window function frames: unbounded preceding for the running total and an entire partition for the lifetime total.
 
----
 
 ### Category 4: Handling Hierarchies and Recursion
 
@@ -56,7 +55,6 @@
 *   **Question:** "An `employees` table has `employee_id`, `name`, and `manager_id`. Write a query to print the full hierarchy for a given employee (e.g., their manager, their manager's manager, etc., all the way to the top)."
 *   **Tests:** Knowledge of **Recursive Common Table Expressions (CTEs)**, which is a must-know for hierarchical data.
 
----
 
 ### Category 5: Performance and Deep Understanding
 
@@ -72,7 +70,6 @@
 *   **Question:** "You've written a query that's running slowly. What is your step-by-step process to diagnose and fix the performance issue?"
 *   **Tests:** Practical knowledge of using `EXPLAIN` (or `EXPLAIN ANALYZE`) to look for full table scans, missing indexes, expensive operations like sorts, or bad join strategies.
 
----
 
 ### Category 6: Set Operations and Unconventional Thinking
 
