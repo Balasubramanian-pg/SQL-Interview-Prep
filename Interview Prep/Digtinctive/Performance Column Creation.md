@@ -86,7 +86,6 @@ SELECT
 FROM sales_table;
 ```
 
----
 
 ## Performance Considerations
 
@@ -114,7 +113,6 @@ SELECT
 FROM sales_table;
 ```
 
----
 
 ## Common Mistakes to Avoid
 
@@ -147,7 +145,6 @@ CASE
 END
 ```
 
----
 
 ## Real-World Application
 
