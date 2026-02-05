@@ -71,7 +71,6 @@ WHERE
 > [!IMPORTANT]  
 > Table aliases make queries more readable and concise, especially when working with multiple tables.  
 
----
 
 These queries demonstrate common patterns for reporting on relational data in SQL interviews, particularly when working with author-book relationships and temporal filtering.  
 
