@@ -56,7 +56,6 @@ ORDER BY user_identifier;
 > [!IMPORTANT]  
 > The `WHERE` clause ensures that only rows with a valid previous event are considered, avoiding `NULL` values in calculations.  
 
----
 
 ## 4. **Key Concepts Used**  
 
@@ -81,7 +80,6 @@ ORDER BY user_identifier;
 > [!IMPORTANT]  
 > CTEs are especially useful when breaking down a problem into logical steps, as seen in this solution.  
 
----
 
 ## 5. **Additional Notes**  
 - **Handling Edge Cases**: The `WHERE previous_event_date IS NOT NULL` clause ensures users with only one event are excluded from the results.  
@@ -90,7 +88,6 @@ ORDER BY user_identifier;
 > [!WARNING]  
 > Ensure the `event_date` column is of a date or datetime type for `LAG()` and `DATEDIFF` to work correctly.  
 
----
 
 This solution efficiently calculates the time difference between consecutive events for each user while handling data grouping, sorting, and edge cases.  
 
