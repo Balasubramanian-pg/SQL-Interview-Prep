@@ -35,7 +35,6 @@ WHERE salary < (SELECT MAX(salary) FROM employees);
 > [!WARNING]  
 > This method fails if there are duplicate highest salaries. Use with caution or add `DISTINCT` if needed.  
 
----
 
 ### 2.3 **Finding Nth Highest Salary with Subquery (PostgreSQL)**  
 ```sql
@@ -52,7 +51,6 @@ FROM (
 > Replace `n` with the desired rank (e.g., `OFFSET 1` for 2nd highest).  
 > `DISTINCT` ensures duplicate salaries are handled correctly.  
 
----
 
 ### 2.4 **Finding Nth Highest Salary with CTE and DENSE_RANK()**  
 ```sql
@@ -71,7 +69,6 @@ WHERE salary_rank = n;
 > Replace `n` with the desired rank.  
 > `DENSE_RANK()` is preferred over `RANK()` as it doesn't skip numbers for ties.  
 
----
 
 ### 2.5 **Finding Any Ranked Salary**  
 ```sql
@@ -90,7 +87,6 @@ WHERE salary_rank = 5;
 > [!NOTE]  
 > This approach is flexible and can be used to find any ranked salary by changing the value in `WHERE salary_rank = X`.  
 
----
 
 ## 3. **Key Differences Between Ranking Functions**  
 
@@ -109,7 +105,6 @@ WHERE salary_rank = 5;
 > [!IMPORTANT]  
 > Use `DENSE_RANK()` when you want consecutive ranking without gaps, even for ties.  
 
----
 
 ## 4. **Performance Considerations**  
 
@@ -125,7 +120,6 @@ WHERE salary_rank = 5;
 > [!WARNING]  
 > Avoid using `ORDER BY` in subqueries for large datasets, as it can degrade performance.  
 
----
 
 These solutions cover the most common approaches to salary ranking questions in SQL interviews across different database systems.  
 
