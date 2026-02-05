@@ -41,7 +41,6 @@ FROM
 > [!NOTE]  
 > The `FOR` clause in `SUBSTRING` ensures we only extract characters up to (but not including) the `@` symbol.  
 
----
 
 ## 4. **Explanation**  
 
@@ -55,7 +54,6 @@ FROM
 2. Extracts up to but not including `@` (`FOR POSITION('@' IN email) - 1`).  
 3. Returns everything before `@` (the username).  
 
----
 
 ## 5. **Key Concepts**  
 
@@ -74,7 +72,6 @@ FROM
 > [!IMPORTANT]  
 > Understanding string functions is crucial for handling text data in SQL, especially in data preprocessing tasks.  
 
----
 
 ## 6. **Alternative Solutions**  
 
@@ -118,7 +115,6 @@ FROM employees;
 > [!NOTE]  
 > `RIGHT` and `LEFT` combined with `CHARINDEX` are commonly used in SQL Server for string manipulation.  
 
----
 
 These solutions demonstrate essential string manipulation techniques commonly tested in SQL interviews.  
 
