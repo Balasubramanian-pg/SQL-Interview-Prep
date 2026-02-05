@@ -53,7 +53,6 @@ SELECT * FROM CROSSTAB(
 > [!NOTE]  
 > The `CROSSTAB` function requires the `tablefunc` extension to be enabled in PostgreSQL.  
 
----
 
 ## 4. **Alternative Solutions**  
 ### 4.1 **SQL Server (Using PIVOT)**  
