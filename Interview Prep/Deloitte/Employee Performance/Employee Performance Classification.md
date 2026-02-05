@@ -59,7 +59,6 @@ FROM employees;
 > [!NOTE]  
 > The original columns (`employee_id`, `name`, etc.) are retained alongside the new `performance_level`.  
 
----
 
 ## 4. **Key Concepts Demonstrated**  
 
@@ -84,7 +83,6 @@ FROM employees;
 > [!NOTE]  
 > Derived columns like `performance_level` enhance the usability of query results.  
 
----
 
 ## 5. **Additional Notes**  
 - **Scalability**: This solution works efficiently for large datasets as `CASE` statements are optimized in most SQL databases.  
@@ -93,7 +91,6 @@ FROM employees;
 > [!WARNING]  
 > Ensure the `performance_rating` values are consistent (e.g., all lowercase or uppercase) to avoid mismatches.  
 
----
 
 This solution efficiently categorizes employees based on multiple criteria, a common requirement for HR analytics and performance reporting systems. The `CASE` statement is a fundamental SQL tool for such conditional transformations.  
 
