@@ -71,7 +71,6 @@ WHERE
 > [!WARNING]  
 > Incorrect calculations (e.g., using `+` instead of `*`) can lead to inaccurate revenue figures.  
 
----
 
 These solutions demonstrate fundamental SQL skills needed for product analytics and inventory management scenarios commonly tested in interviews.  
 
