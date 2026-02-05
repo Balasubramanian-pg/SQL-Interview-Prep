@@ -47,7 +47,6 @@ Next, we recursively add one day at a time to the anchor date until we reach the
 > [!IMPORTANT]  
 > The termination condition is critical to prevent infinite recursion.  
 
----
 
 ### 3.2 **Step 2: Filter and Rank the Target Weekdays**  
 Once we have a list of all dates in the current month, we can identify and rank our target weekday.  
@@ -66,7 +65,6 @@ After filtering, we have a list of all Wednesdays in the month. We use `ROW_NUMB
 > [!TIP]  
 > `ROW_NUMBER()` is ideal for this task as it provides a unique rank without gaps.  
 
----
 
 ### 3.3 **Step 3: Select the Final Date**  
 With the ranks assigned, the final step is to simply select the row with the desired rank.  
@@ -75,7 +73,6 @@ With the ranks assigned, the final step is to simply select the row with the des
 > [!IMPORTANT]  
 > Change the rank number to find different occurrences (e.g., `rank = 1` for the first Wednesday).  
 
----
 
 ## 4. **The Complete SQL Query (Using CTEs)**  
 This query combines all the steps into a single, readable block.  
@@ -117,11 +114,9 @@ WHERE
 > [!TIP]  
 > This approach is highly flexible. By changing the weekday name in the filter and the rank number in the final `WHERE` clause, you can find any occurrence of any weekday (e.g., the 4th Friday or the 1st Monday).  
 
----
 
 This solution demonstrates advanced SQL techniques, including recursive CTEs, window functions, and dynamic date manipulation, making it a valuable addition to your SQL toolkit.  
 
 > [!TIP]  
 > Practice modifying this query to find different weekdays or occurrences to deepen your understanding of these concepts.  
 
----
